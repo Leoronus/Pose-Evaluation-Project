@@ -4,10 +4,12 @@ from mediapipe.tasks.python import vision
 import cv2
 import threading
 import time
-import global_vars
-from bodyParts import MainBody
+import TrackingManagement.tracking_vars
+from TrackingManagement.bodyParts import MainBody
 
 
+
+#responsible solely for camera capture
 class CaptureThread(threading.Thread):
     cap = None
     ret = None
@@ -18,18 +20,18 @@ class CaptureThread(threading.Thread):
 
     def run(self):
         self.cap = cv2.VideoCapture(0)
-        if (global_vars.USE_CUSTOM_CAM_SETTINGS):
-            self.cap.set(cv2.CAP_PROP_FPS, global_vars.FPS)
-            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, global_vars.WIDTH)
-            self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, global_vars.HEIGHT)
+        if (TrackingManagement.tracking_vars.USE_CUSTOM_CAM_SETTINGS):
+            self.cap.set(cv2.CAP_PROP_FPS, TrackingManagement.tracking_vars.FPS)
+            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, TrackingManagement.tracking_vars.WIDTH)
+            self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, TrackingManagement.tracking_vars.HEIGHT)
 
         time.sleep(1)
 
         print("Opened capture at %i fps" % self.cap.get(cv2.CAP_PROP_FPS))
-        while (not global_vars.KILL_THREADS):
+        while (not TrackingManagement.tracking_vars.KILL_THREADS):
             self.ret, self.frame = self.cap.read()
             self.isRunning = True
-            if (global_vars.DEBUG):
+            if (TrackingManagement.tracking_vars.DEBUG):
                 self.timer += 1
                 if (time.time() - self.timer >= 5):
                     print("capture fps: ", self.counter / (time.time() - self.timer))
@@ -49,23 +51,23 @@ class BodyThread(threading.Thread):
         capture = CaptureThread()
         capture.start()
 
-        with mpPose.Pose(min_detection_confidence=0.8, min_tracking_confidence=0.5, model_complexity = global_vars.MODEL_COMPLEXITY,static_image_mode = False,enable_segmentation = True) as pose:
-            while (not global_vars.KILL_THREADS and capture.isRunning == False):
+        with mpPose.Pose(min_detection_confidence=0.8, min_tracking_confidence=0.5, model_complexity = TrackingManagement.tracking_vars.MODEL_COMPLEXITY,static_image_mode = False,enable_segmentation = True) as pose:
+            while (not TrackingManagement.tracking_vars.KILL_THREADS and capture.isRunning == False):
                 print("Waiting for camera and capture thread.")
                 time.sleep(0.5)
             print("Beginning capture")
 
-            while (not global_vars.KILL_THREADS and capture.cap.isOpened()):
+            while (not TrackingManagement.tracking_vars.KILL_THREADS and capture.cap.isOpened()):
                 ti = time.time()
                 ret = capture.ret
                 image = capture.frame
                 image = cv2.flip(image, 1)
-                image.flags.writeable = global_vars.DEBUG
+                image.flags.writeable = TrackingManagement.tracking_vars.DEBUG
 
                 results = pose.process(image)
                 tf = time.time()
 
-                if (global_vars.DEBUG):
+                if (TrackingManagement.tracking_vars.DEBUG):
                     if (time.time() - self.timeSinceStats >= 1):
                         print("Theoretical Maximum FPS: %f"%(1/(tf-ti)))
                         self.timeSincePostStatistics = time.time()
@@ -80,5 +82,5 @@ class BodyThread(threading.Thread):
                 
                 if (results != None):
                     self.mainBody.updateLandmarks(results)
-                    if (global_vars.DEBUG):
+                    if (TrackingManagement.tracking_vars.DEBUG):
                         print("Nose position: ", self.mainBody.head.landmarks["nose"].x)

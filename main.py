@@ -1,9 +1,10 @@
-from body import BodyThread
+import TrackingManagement
+from TrackingManagement.body import BodyThread
 import time
 import struct
-import global_vars
+import TrackingManagement.tracking_vars
 from sys import exit
-from bodyParts import MainBody
+from TrackingManagement.bodyParts import MainBody
 
 
 mainBody = MainBody()
@@ -16,6 +17,6 @@ while True:
 
 i = input()
 print("Exiting…")        
-global_vars.KILL_THREADS = True
+TrackingManagement.tracking_vars.KILL_THREADS = True
 time.sleep(0.5)
 exit()

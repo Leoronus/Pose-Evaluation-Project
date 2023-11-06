@@ -13,6 +13,7 @@ class Arm:
         "index"     : InitMark(),
         "thumb"     : InitMark()
     }
+    '''Access like "landmarks["choice"]". Choices are shoulder, elbow, wrist, pinkie, index, thumb.'''
 
     def update(self, newMarks, side):
         self.landmarks["shoulder"]  = newMarks[11] if (side == 'L') else newMarks[12]
@@ -31,6 +32,7 @@ class Leg:
         "heel"      : InitMark(),
         "toes"      : InitMark()
     }
+    '''Access like "landmarks["choice"]". Choices are hip, knee, ankle, heel, toes.'''
 
     def update(self, newMarks, side):
         self.landmarks["hip"  ]   = newMarks[23] if (side == 'L') else newMarks[24]
@@ -48,6 +50,7 @@ class Head:
         "mouthL"    : InitMark(),
         "mouthR"    : InitMark()
     }
+    '''Access like "landmarks["choice"]". Choices are nose, eyeL, eyeR, mouthL, mouthR.'''
 
     def update(self, newMarks):
         self.landmarks["nose"  ] = newMarks[0]  
@@ -64,6 +67,7 @@ class Torso:
         "hipL"      : InitMark(),
         "hipR"      : InitMark()
     }
+    '''Access like "landmarks["choice"]". Choices are shoulderL, shoulderR, hipL, hipR.'''
 
     def update(self, newMarks):
         self.landmarks["shoulderL"] = newMarks[0]  
