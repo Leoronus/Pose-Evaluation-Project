@@ -50,6 +50,7 @@ class BodyThread(threading.Thread):
         mpPose = mp.solutions.pose
         capture = CaptureThread()
         capture.start()
+        mainBody = None
 
         with mpPose.Pose(min_detection_confidence=0.8, min_tracking_confidence=0.5, model_complexity = TrackingManagement.tracking_vars.MODEL_COMPLEXITY,static_image_mode = False,enable_segmentation = True) as pose:
             while (not TrackingManagement.tracking_vars.KILL_THREADS and capture.isRunning == False):
@@ -84,3 +85,8 @@ class BodyThread(threading.Thread):
                     self.mainBody.updateLandmarks(results)
                     if (TrackingManagement.tracking_vars.DEBUG):
                         print("Nose position: ", self.mainBody.head.landmarks["nose"].x)
+
+    def GetRawBody(self):
+        if (self.mainBody != None):
+            return self.mainBody
+    
