@@ -3,7 +3,7 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import components
 from mediapipe.tasks.python.components import containers
 from mediapipe.tasks.python.components.containers import Landmark
-import tracking_vars
+import TrackingManagement.tracking_vars
 
 
 class Arm:
@@ -89,7 +89,7 @@ class MainBody:
     head = Head()
     __inited = False
 
-    smoothingSteps = tracking_vars.SMOOTHING_STEPS
+    smoothingSteps = TrackingManagement.tracking_vars.SMOOTHING_STEPS
     __smoothingProgress = 0
     __smoothingArray = []
     __MPResultTemplate = None
@@ -105,10 +105,10 @@ class MainBody:
             self.torso.update(self.landmarks)
             self.head.update(self.landmarks)
         
-        if (len(self.__smoothingArray) < self.smoothingNr):
+        if (len(self.__smoothingArray) < self.smoothingSteps):
             self.__smoothingArray.append(mediapipeResults)
         else:
-            self.__smoothingArray[self.__smoothingProgress % self.smoothingNr] = mediapipeResults
+            self.__smoothingArray[self.__smoothingProgress % self.smoothingSteps] = mediapipeResults
         self.__smoothingProgress += 1
 
     def getSmoothed(self):

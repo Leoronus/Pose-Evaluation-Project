@@ -6,6 +6,7 @@ import threading
 import time
 import TrackingManagement.tracking_vars
 from TrackingManagement.bodyParts import MainBody
+from TrackingManagement.recording import RecorderThread
 
 
 
@@ -41,9 +42,9 @@ class CaptureThread(threading.Thread):
 
 
 class BodyThread(threading.Thread):
-    data = ""
-    timeSinceStats = 0
+    __timeSinceStats = 0
     mainBody = MainBody()
+    __recorder = RecorderThread()
     
     def run(self):
         mpDrawing = mp.solutions.drawing_utils
@@ -69,7 +70,7 @@ class BodyThread(threading.Thread):
                 tf = time.time()
 
                 if (TrackingManagement.tracking_vars.DEBUG):
-                    if (time.time() - self.timeSinceStats >= 1):
+                    if (time.time() - self.__timeSinceStats >= 1):
                         print("Theoretical Maximum FPS: %f"%(1/(tf-ti)))
                         self.timeSincePostStatistics = time.time()
                         
@@ -93,4 +94,14 @@ class BodyThread(threading.Thread):
     def getSmoothedBody(self):
         if (self.mainBody != None):
             return self.mainBody.getSmoothed()
-    
+        
+    def StartRecording(self, captureRate: int, smoothed: bool):
+        self.__recorder.recording = True
+        self.__recorder.bodyThread = self
+        self.__recorder.captureRate = captureRate
+        self.__recorder.captureSmoothed = smoothed
+        self.__recorder.start()
+
+    def StopRecording(self):
+        self.__recorder.recording = False
+        return self.__recorder.record
