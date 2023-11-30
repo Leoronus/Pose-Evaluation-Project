@@ -8,12 +8,14 @@ from TrackingManagement.bodyParts import MainBody
 
 
 mainBody = MainBody()
-thread = BodyThread()
-thread.start()
+bodyThread = BodyThread()
+bodyThread.start()
 
 while True:
-    print("Nose position x: ", BodyThread.mainBody.head.landmarks["nose"].x)
-    time.sleep(5)
+    print("Nose position x: ", bodyThread.getRawBody().head.landmarks["nose"].x)
+    smoothed = bodyThread.getSmoothedBody()
+    if (smoothed != None): print("Nose position x (smoothed): ", smoothed.head.landmarks["nose"].x)
+    time.sleep(2)
 
 i = input()
 print("Exiting…")        

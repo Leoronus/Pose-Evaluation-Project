@@ -1,17 +1,19 @@
-class InitMark:
-    x = 0.0
-    y = 0.0
-    z = 0.0
+import mediapipe as mp
+from mediapipe.tasks import python
+from mediapipe.tasks.python import components
+from mediapipe.tasks.python.components import containers
+from mediapipe.tasks.python.components.containers import Landmark
+import tracking_vars
 
 
 class Arm:
     landmarks = {
-        "shoulder"  : InitMark(),
-        "elbow"     : InitMark(),
-        "wrist"     : InitMark(),
-        "pinkie"    : InitMark(),
-        "index"     : InitMark(),
-        "thumb"     : InitMark()
+        "shoulder"  : Landmark(),
+        "elbow"     : Landmark(),
+        "wrist"     : Landmark(),
+        "pinkie"    : Landmark(),
+        "index"     : Landmark(),
+        "thumb"     : Landmark()
     }
     '''Access like "landmarks["choice"]". Choices are shoulder, elbow, wrist, pinkie, index, thumb.'''
 
@@ -22,15 +24,16 @@ class Arm:
         self.landmarks["pinkie"  ]  = newMarks[17] if (side == 'L') else newMarks[18]
         self.landmarks["index"   ]  = newMarks[19] if (side == 'L') else newMarks[20]
         self.landmarks["thumb"   ]  = newMarks[21] if (side == 'L') else newMarks[22]
+        self.landmarks["thumb"   ]  = newMarks[21] if (side == 'L') else newMarks[22]
 
 
 class Leg:
     landmarks = {
-        "hip"       : InitMark(),
-        "knee"      : InitMark(),
-        "ankle"     : InitMark(),
-        "heel"      : InitMark(),
-        "toes"      : InitMark()
+        "hip"       : Landmark(),
+        "knee"      : Landmark(),
+        "ankle"     : Landmark(),
+        "heel"      : Landmark(),
+        "toes"      : Landmark()
     }
     '''Access like "landmarks["choice"]". Choices are hip, knee, ankle, heel, toes.'''
 
@@ -44,11 +47,11 @@ class Leg:
 
 class Head:
     landmarks = {
-        "nose"      : InitMark(),
-        "eyeL"      : InitMark(),
-        "eyeR"      : InitMark(),
-        "mouthL"    : InitMark(),
-        "mouthR"    : InitMark()
+        "nose"      : Landmark(),
+        "eyeL"      : Landmark(),
+        "eyeR"      : Landmark(),
+        "mouthL"    : Landmark(),
+        "mouthR"    : Landmark()
     }
     '''Access like "landmarks["choice"]". Choices are nose, eyeL, eyeR, mouthL, mouthR.'''
 
@@ -62,10 +65,10 @@ class Head:
 
 class Torso:
     landmarks = {
-        "shoulderL" : InitMark(),
-        "shoulderR" : InitMark(),
-        "hipL"      : InitMark(),
-        "hipR"      : InitMark()
+        "shoulderL" : Landmark(),
+        "shoulderR" : Landmark(),
+        "hipL"      : Landmark(),
+        "hipR"      : Landmark()
     }
     '''Access like "landmarks["choice"]". Choices are shoulderL, shoulderR, hipL, hipR.'''
 
@@ -84,9 +87,16 @@ class MainBody:
     rightLeg = Leg()
     torso = Torso()
     head = Head()
+    __inited = False
 
+    smoothingSteps = tracking_vars.SMOOTHING_STEPS
+    __smoothingProgress = 0
+    __smoothingArray = []
+    __MPResultTemplate = None
     def updateLandmarks(self, mediapipeResults):
         if (mediapipeResults.pose_world_landmarks != None):
+            self.__inited = True
+            self.__MPResultTemplate = mediapipeResults
             self.landmarks = mediapipeResults.pose_world_landmarks.landmark
             self.leftArm.update(self.landmarks, 'L')
             self.rightArm.update(self.landmarks, 'R')
@@ -94,3 +104,48 @@ class MainBody:
             self.rightLeg.update(self.landmarks, 'R')
             self.torso.update(self.landmarks)
             self.head.update(self.landmarks)
+        
+        if (len(self.__smoothingArray) < self.smoothingNr):
+            self.__smoothingArray.append(mediapipeResults)
+        else:
+            self.__smoothingArray[self.__smoothingProgress % self.smoothingNr] = mediapipeResults
+        self.__smoothingProgress += 1
+
+    def getSmoothed(self):
+        if(len(self.__smoothingArray) > 0 and self.__inited):
+            smoothed = MainBody
+            tempListVal = []
+            tempListNr = []
+            for i in range(33):
+                tempListVal.append(Landmark())
+                tempListVal[i].x = 0.0
+                tempListVal[i].y = 0.0
+                tempListVal[i].z = 0.0
+                tempListVal[i].visibility = 0.0
+                tempListNr.append(0)
+            for item in self.__smoothingArray:
+                if (item.pose_world_landmarks != None):
+                    landmarks = item.pose_world_landmarks.landmark
+                    for index in range(len(landmarks)):
+                        if (landmarks[index] != None):
+                            tempListNr[index] += 1
+                            tempListVal[index].x += landmarks[index].x
+                            tempListVal[index].y += landmarks[index].y
+                            tempListVal[index].z += landmarks[index].z
+                            tempListVal[index].visibility += landmarks[index].visibility
+
+            for index in range(len(tempListNr)):
+                tempListVal[index].x = tempListVal[index].x / (tempListNr[index] + 0.0001)
+                tempListVal[index].y = tempListVal[index].y / (tempListNr[index] + 0.0001)
+                tempListVal[index].z = tempListVal[index].z / (tempListNr[index] + 0.0001)
+                tempListVal[index].visibility = tempListVal[index].visibility / (tempListNr[index] + 0.0001)
+
+            if (self.__MPResultTemplate != None and self.__MPResultTemplate.pose_world_landmarks != None):
+                result = self.__MPResultTemplate
+                for i in range(33):
+                    result.pose_world_landmarks.landmark[i].x = tempListVal[i].x
+                    result.pose_world_landmarks.landmark[i].y = tempListVal[i].y
+                    result.pose_world_landmarks.landmark[i].z = tempListVal[i].z
+                    result.pose_world_landmarks.landmark[i].visibility = tempListVal[i].visibility
+                smoothed.updateLandmarks(self, result)
+            return smoothed
