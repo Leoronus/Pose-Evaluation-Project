@@ -11,11 +11,14 @@ mainBody = MainBody()
 bodyThread = BodyThread()
 bodyThread.start()
 
+
 '''while True:
     print("Nose position x: ", bodyThread.getRawBody().head.landmarks["nose"].x)
     smoothed = bodyThread.getSmoothedBody()
     if (smoothed != None): print("Nose position x (smoothed): ", smoothed.head.landmarks["nose"].x)
     time.sleep(2)'''
+
+
 time.sleep(15)
 bodyThread.StartRecording(10, True)
 print("recording...")
