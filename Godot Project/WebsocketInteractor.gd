@@ -25,7 +25,7 @@ func _process(delta):
 		while socket.get_available_packet_count():
 			var packet = socket.get_packet()
 			var message = packet_to_string(packet)
-			print("Received message: ", message)
+			#print("Received message: ", message)
 			var arr: Array[Dictionary] = Parser(message)
 			if(arr.size() == 33):
 				BodyReceived.emit(arr)

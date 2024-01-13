@@ -12,7 +12,7 @@ func _ready():
 		sphere.mesh = SphereMesh.new()
 		sphere.name = "landmark " + str(i)
 		sphere.transform.origin = Vector3(rng.randf_range(-10, 10), rng.randf_range(-10, 10), 0.0)
-		sphere.scale = Vector3(1, 1, 1) * 0.3
+		sphere.scale = Vector3(1, 1, 1) * 0.15
 		landmarks.append(sphere)
 		add_child(sphere)
 
@@ -24,4 +24,4 @@ func _process(delta):
 func _on_websocket_interactor_body_received(receivedLandmarks: Array[Dictionary]):
 	for i in 33:
 		var mark = receivedLandmarks[i]
-		landmarks[i].transform.origin = Vector3(mark["x"], mark["y"], mark["z"])
+		landmarks[i].transform.origin = Vector3(mark["x"], - mark["y"], mark["z"])
