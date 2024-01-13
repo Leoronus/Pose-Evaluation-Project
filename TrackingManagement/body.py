@@ -105,3 +105,10 @@ class BodyThread(threading.Thread):
     def StopRecording(self):
         self.__recorder.recording = False
         return self.__recorder.record
+        
+    def getBodyMessage(self):
+        msg = "Body{"
+        for node in self.mainBody.landmarks:
+            msg += "|" + str(node)
+        msg += "}"
+        return msg

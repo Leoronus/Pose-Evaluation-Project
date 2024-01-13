@@ -24,7 +24,6 @@ class Arm:
         self.landmarks["pinkie"  ]  = newMarks[17] if (side == 'L') else newMarks[18]
         self.landmarks["index"   ]  = newMarks[19] if (side == 'L') else newMarks[20]
         self.landmarks["thumb"   ]  = newMarks[21] if (side == 'L') else newMarks[22]
-        self.landmarks["thumb"   ]  = newMarks[21] if (side == 'L') else newMarks[22]
 
 
 class Leg:

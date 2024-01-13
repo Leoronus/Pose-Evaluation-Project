@@ -5,40 +5,50 @@ import struct
 import TrackingManagement.tracking_vars
 from sys import exit
 from TrackingManagement.bodyParts import MainBody
-import flet as ft
-import numpy as np
-import base64
-from io import BytesIO
-from PIL import Image as image
+# import flet as ft
+# import numpy as np
+# import base64
+# from io import BytesIO
+# from PIL import Image as image
+import websocketServer
 
 
-#mainBody = MainBody()
-#bodyThread = BodyThread()
-#bodyThread.start()
+mainBody = MainBody()
+bodyThread = BodyThread()
+bodyThread.start()
+serverThread = websocketServer.WebsocketServerThread()
+serverThread.start()
+socketConnected = False
 
 
-'''while True:
-    print("Nose position x: ", bodyThread.getRawBody().head.landmarks["nose"].x)
+while True:
+    while not socketConnected:
+        socketConnected = serverThread.getConnected()
+        print("connecting")
+        time.sleep(1)
+    # print("Nose position x: ", bodyThread.getRawBody().head.landmarks["nose"].x)
     smoothed = bodyThread.getSmoothedBody()
-    if (smoothed != None): print("Nose position x (smoothed): ", smoothed.head.landmarks["nose"].x)
-    time.sleep(2)
+    serverThread.sendThis(bodyThread.getBodyMessage())
+    # if (smoothed != None): print("Nose position x (smoothed): ", smoothed.head.landmarks["nose"].x)
+    # time.sleep(0.0333)
+    time.sleep(1)
+# 
+# 
+    # time.sleep(15)
+    # bodyThread.StartRecording(10, True)
+    # print("recording...")
+    # time.sleep(5)
+    # record = bodyThread.StopRecording()
+    # print (len(record))
+# 
+    # i = input()
+    # print("Exiting…")        
+    # TrackingManagement.tracking_vars.KILL_THREADS = True
+    # time.sleep(0.5)
+    # exit()
 
 
-    time.sleep(15)
-    bodyThread.StartRecording(10, True)
-    print("recording...")
-    time.sleep(5)
-    record = bodyThread.StopRecording()
-    print (len(record))
-
-    i = input()
-    print("Exiting…")        
-    TrackingManagement.tracking_vars.KILL_THREADS = True
-    time.sleep(0.5)
-    exit()'''
-
-
-def main(page: ft.Page):
+'''def main(page: ft.Page):
     page.title = "Flet prototype"
     primaryColor = "#50C5AA"
     page.theme = ft.Theme(color_scheme=ft.ColorScheme(primary=primaryColor))
@@ -112,4 +122,4 @@ def main(page: ft.Page):
     
 
 
-ft.app(target=main)
+ft.app(target=main)'''
