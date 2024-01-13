@@ -107,8 +107,9 @@ class BodyThread(threading.Thread):
         return self.__recorder.record
         
     def getBodyMessage(self):
-        msg = "Body{"
-        for node in self.mainBody.landmarks:
-            msg += "|" + str(node)
-        msg += "}"
+        msg = "Body"
+        body = self.getSmoothedBody()
+        if (body != None):
+            for node in self.mainBody.landmarks:
+                msg += "|" + str(node)
         return msg

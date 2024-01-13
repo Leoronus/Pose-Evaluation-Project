@@ -6,9 +6,11 @@ extends RichTextLabel
 var socket = WebSocketPeer.new()
 var connection_attempt_timer: float = 0
 var connection_attempt_interval: float = 1.0  # 1 second
+signal BodyReceived(receivedLandmarks: Array[Dictionary])
 
 func _ready():
 	socket.connect_to_url(websocket_url)
+	text = "Trying to connect to backend"
 
 func _process(delta):
 	socket.poll()
@@ -24,10 +26,27 @@ func _process(delta):
 			var packet = socket.get_packet()
 			var message = packet_to_string(packet)
 			print("Received message: ", message)
-			text = message
+			var arr: Array[Dictionary] = Parser(message)
+			if(arr.size() == 33):
+				BodyReceived.emit(arr)
 
 func packet_to_string(packet: PackedByteArray) -> String:
 	var message: String = ""
 	for i in range(packet.size()):
 		message += char(packet[i])
 	return message
+
+func Parser(message: String) -> Array[Dictionary]:
+	var msgArray: PackedStringArray = message.split("|");
+	var returnArray: Array[Dictionary]
+	if (msgArray[0] == "Body"):
+		for i: int in range(1, msgArray.size()):
+			var tempArr: PackedStringArray = msgArray[i].split("\n")
+			var tempDict: Dictionary
+			for j in 4:
+				var item: String = tempArr[j]
+				var tuple: PackedStringArray = item.split(": ")
+				tempDict[tuple[0]] = float(tuple[1])
+			returnArray.append(tempDict)
+	return returnArray
+	

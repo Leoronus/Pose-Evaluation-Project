@@ -30,8 +30,8 @@ while True:
     smoothed = bodyThread.getSmoothedBody()
     serverThread.sendThis(bodyThread.getBodyMessage())
     # if (smoothed != None): print("Nose position x (smoothed): ", smoothed.head.landmarks["nose"].x)
-    # time.sleep(0.0333)
-    time.sleep(1)
+    time.sleep(0.0333)
+    # time.sleep(1)
 # 
 # 
     # time.sleep(15)
