@@ -1,19 +1,27 @@
-[gd_scene load_steps=6 format=3 uid="uid://c68h4lb5tcjpj"]
+[gd_scene load_steps=7 format=3 uid="uid://c68h4lb5tcjpj"]
 
-[ext_resource type="Script" path="res://visualizationManager.gd" id="1_vje5x"]
-[ext_resource type="Script" path="res://WebsocketInteractor.gd" id="2_flf4g"]
-[ext_resource type="Script" path="res://PythonScriptHandler.gd" id="3_mxv28"]
-[ext_resource type="Script" path="res://RULA label.gd" id="4_ioyu8"]
-[ext_resource type="Script" path="res://OWAS label.gd" id="5_hplph"]
+[ext_resource type="Script" path="res://Scripts/visualizationManager.gd" id="1_vje5x"]
+[ext_resource type="Script" path="res://Scripts/WebsocketInteractor.gd" id="2_flf4g"]
+[ext_resource type="Script" path="res://Scripts/PythonScriptHandler.gd" id="3_mxv28"]
+[ext_resource type="Theme" uid="uid://c182j7qiysl7o" path="res://mainTheme.tres" id="4_a3r1g"]
+[ext_resource type="Script" path="res://Scripts/RULA label.gd" id="4_ioyu8"]
+[ext_resource type="Script" path="res://Scripts/OWAS label.gd" id="5_hplph"]
 
 [node name="Node3D" type="Node3D"]
 
 [node name="visualizationManager" type="Node3D" parent="."]
 script = ExtResource("1_vje5x")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = ExtResource("4_a3r1g")
 
-[node name="WebsocketInteractor" type="RichTextLabel" parent="CanvasLayer"]
+[node name="CanvasLayer" type="CanvasLayer" parent="Control"]
+
+[node name="WebsocketInteractor" type="RichTextLabel" parent="Control/CanvasLayer"]
 z_index = 1
 offset_left = 55.0
 offset_top = 37.0
@@ -21,7 +29,7 @@ offset_right = 464.0
 offset_bottom = 336.0
 script = ExtResource("2_flf4g")
 
-[node name="PythonScriptHandler" type="RichTextLabel" parent="CanvasLayer"]
+[node name="PythonScriptHandler" type="RichTextLabel" parent="Control/CanvasLayer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -37,15 +45,15 @@ theme_override_colors/default_color = Color(1, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 40
 script = ExtResource("3_mxv28")
 
-[node name="background" type="ColorRect" parent="CanvasLayer"]
+[node name="background" type="ColorRect" parent="Control/CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.74902, 1, 0.894118, 1)
+color = Color(0.5, 1, 0.916667, 1)
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Control/CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -55,32 +63,85 @@ offset_right = -220.0
 offset_bottom = -21.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("4_a3r1g")
 
-[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="Control/CanvasLayer/SubViewportContainer"]
 handle_input_locally = false
 size = Vector2i(862, 587)
 render_target_update_mode = 4
 
-[node name="Camera3D" type="Camera3D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+[node name="Camera3D" type="Camera3D" parent="Control/CanvasLayer/SubViewportContainer/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 0.999191, 0.040219, 0, -0.040219, 0.999191, 0, 0.220885, 3.38903)
 current = true
 fov = 40.0
 
-[node name="RULA" type="RichTextLabel" parent="CanvasLayer"]
-offset_left = 688.0
-offset_top = 324.0
-offset_right = 875.0
-offset_bottom = 454.0
+[node name="Panel" type="Panel" parent="Control/CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.773
+anchor_right = 0.993
+anchor_bottom = 0.985
+offset_left = 0.503906
+offset_top = 9.0
+offset_right = 0.0639648
+offset_bottom = -0.280029
+theme = ExtResource("4_a3r1g")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/CanvasLayer/Panel"]
+clip_contents = true
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("4_a3r1g")
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("4_a3r1g")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/CanvasLayer/Panel/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/CanvasLayer/Panel/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_a3r1g")
+text = "RULA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RULA text" type="RichTextLabel" parent="Control/CanvasLayer/Panel/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 script = ExtResource("4_ioyu8")
 
-[node name="OWAS" type="RichTextLabel" parent="CanvasLayer"]
-offset_left = 691.0
-offset_top = 446.0
-offset_right = 874.0
-offset_bottom = 575.0
+[node name="PanelContainer2" type="PanelContainer" parent="Control/CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("4_a3r1g")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/CanvasLayer/Panel/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/CanvasLayer/Panel/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_a3r1g")
+text = "OWAS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OWAS text" type="RichTextLabel" parent="Control/CanvasLayer/Panel/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 script = ExtResource("5_hplph")
 
-[connection signal="BodyReceived" from="CanvasLayer/WebsocketInteractor" to="visualizationManager" method="_on_websocket_interactor_body_received"]
-[connection signal="OwasReceived" from="CanvasLayer/WebsocketInteractor" to="CanvasLayer/OWAS" method="_on_websocket_interactor_owas_received"]
-[connection signal="RulaRecieved" from="CanvasLayer/WebsocketInteractor" to="CanvasLayer/RULA" method="_on_websocket_interactor_rula_recieved"]
-[connection signal="tree_exiting" from="CanvasLayer/PythonScriptHandler" to="CanvasLayer/PythonScriptHandler" method="_on_tree_exiting"]
+[connection signal="BodyReceived" from="Control/CanvasLayer/WebsocketInteractor" to="visualizationManager" method="_on_websocket_interactor_body_received"]
+[connection signal="OwasReceived" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/Panel/VBoxContainer/PanelContainer2/VBoxContainer/OWAS text" method="_on_websocket_interactor_owas_received"]
+[connection signal="RulaRecieved" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/Panel/VBoxContainer/PanelContainer/VBoxContainer/RULA text" method="_on_websocket_interactor_rula_recieved"]
+[connection signal="tree_exiting" from="Control/CanvasLayer/PythonScriptHandler" to="Control/CanvasLayer/PythonScriptHandler" method="_on_tree_exiting"]
