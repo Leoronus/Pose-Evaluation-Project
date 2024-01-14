@@ -22,11 +22,9 @@ func _process(delta):
 	if connection_attempt_timer >= connection_attempt_interval && state == WebSocketPeer.STATE_CONNECTING:
 		connection_attempt_timer = 0
 		print("Trying to connect")
-	
-	else:
-		text = ""
 		
 	if state == WebSocketPeer.STATE_OPEN:
+		text = ""
 		while socket.get_available_packet_count():
 			var packet = socket.get_packet()
 			var message = packet_to_string(packet)
