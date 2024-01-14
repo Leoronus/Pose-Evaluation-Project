@@ -12,4 +12,4 @@ func _process(delta):
 
 
 func _on_websocket_interactor_rula_recieved(leftScore, rightScore):
-	text = str(leftScore)
+	text = "RULA left: " + str(leftScore) + "\nRULA right" + str(rightScore)

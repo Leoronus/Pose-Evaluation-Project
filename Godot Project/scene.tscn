@@ -67,10 +67,10 @@ current = true
 fov = 40.0
 
 [node name="RULA" type="RichTextLabel" parent="CanvasLayer"]
-offset_left = 915.0
-offset_top = 328.0
-offset_right = 1102.0
-offset_bottom = 458.0
+offset_left = 688.0
+offset_top = 324.0
+offset_right = 875.0
+offset_bottom = 454.0
 script = ExtResource("4_ioyu8")
 
 [node name="OWAS" type="RichTextLabel" parent="CanvasLayer"]
