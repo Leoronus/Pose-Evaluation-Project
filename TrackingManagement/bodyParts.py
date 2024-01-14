@@ -79,7 +79,7 @@ class Torso:
 
 
 class MainBody:
-    landmarks = None
+    landmarks = []
     leftArm = Arm()
     rightArm = Arm()
     leftLeg = Leg()

@@ -7,6 +7,7 @@ var socket = WebSocketPeer.new()
 var connection_attempt_timer: float = 0
 var connection_attempt_interval: float = 1.0  # 1 second
 signal BodyReceived(receivedLandmarks: Array[Dictionary])
+signal RulaRecieved(leftScore: int, rightScore: int)
 
 func _ready():
 	socket.connect_to_url(websocket_url)
@@ -20,15 +21,23 @@ func _process(delta):
 	if connection_attempt_timer >= connection_attempt_interval && state == WebSocketPeer.STATE_CONNECTING:
 		connection_attempt_timer = 0
 		print("Trying to connect")
+	
+	else:
+		text = ""
 		
 	if state == WebSocketPeer.STATE_OPEN:
 		while socket.get_available_packet_count():
 			var packet = socket.get_packet()
 			var message = packet_to_string(packet)
 			#print("Received message: ", message)
-			var arr: Array[Dictionary] = Parser(message)
-			if(arr.size() == 33):
-				BodyReceived.emit(arr)
+			var parsedArray: Array = Parser(message)
+			var tag: String = parsedArray[0]
+			var dictArray: Array[Dictionary] = parsedArray[1]
+			if (dictArray.size() != 0):
+				if(tag == "Body" && dictArray.size() == 33):
+					BodyReceived.emit(dictArray)
+				elif(tag == "RULA"):
+					RulaRecieved.emit(dictArray[0]["left"], dictArray[0]["right"])
 
 func packet_to_string(packet: PackedByteArray) -> String:
 	var message: String = ""
@@ -36,17 +45,18 @@ func packet_to_string(packet: PackedByteArray) -> String:
 		message += char(packet[i])
 	return message
 
-func Parser(message: String) -> Array[Dictionary]:
+func Parser(message: String) -> Array:
 	var msgArray: PackedStringArray = message.split("|");
-	var returnArray: Array[Dictionary]
-	if (msgArray[0] == "Body"):
+	var dictArray: Array[Dictionary]
+	if (msgArray.size() > 1):
 		for i: int in range(1, msgArray.size()):
 			var tempArr: PackedStringArray = msgArray[i].split("\n")
 			var tempDict: Dictionary
-			for j in 4:
+			for j in tempArr.size() if (msgArray[0] != "Body") else 4:
 				var item: String = tempArr[j]
 				var tuple: PackedStringArray = item.split(": ")
 				tempDict[tuple[0]] = float(tuple[1])
-			returnArray.append(tempDict)
+			dictArray.append(tempDict)
+	var returnArray: Array = [msgArray[0], dictArray]
 	return returnArray
 	

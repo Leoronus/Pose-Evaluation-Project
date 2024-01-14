@@ -11,6 +11,7 @@ from TrackingManagement.bodyParts import MainBody
 # from io import BytesIO
 # from PIL import Image as image
 import websocketServer
+import ScoringManagement.rula as RULA
 
 
 mainBody = MainBody()
@@ -27,12 +28,20 @@ while True:
         print("connecting")
         time.sleep(1)
     # print("Nose position x: ", bodyThread.getRawBody().head.landmarks["nose"].x)
-    smoothed = bodyThread.getSmoothedBody()
-    serverThread.sendThis(bodyThread.getBodyMessage())
+    body = bodyThread.getRawBody()
+    if (body != None):
+        serverThread.sendThis(bodyThread.getBodyMessage(body))
+        serverThread.sendThis(RULA.getRulaMessage(body))
     # if (smoothed != None): print("Nose position x (smoothed): ", smoothed.head.landmarks["nose"].x)
+
+
     time.sleep(0.0333)
     # time.sleep(1)
-# 
+
+
+
+
+''' 
 # 
     # time.sleep(15)
     # bodyThread.StartRecording(10, True)
@@ -48,7 +57,7 @@ while True:
     # exit()
 
 
-'''def main(page: ft.Page):
+def main(page: ft.Page):
     page.title = "Flet prototype"
     primaryColor = "#50C5AA"
     page.theme = ft.Theme(color_scheme=ft.ColorScheme(primary=primaryColor))

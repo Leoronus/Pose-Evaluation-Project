@@ -5,12 +5,18 @@ def winkel(P1, P2, P3):
  Punkte als array der größe 3 erwartet'''
 
  #vektoren berechnen
- vector1 = [P2[0]-P1[0],P2[1]-P1[1],P2[2]-P1[2]];
- vector2 = [P2[0]-P3[0],P2[1]-P3[1],P2[2]-P3[2]];
+ vector1 = [P2[0]-P1[0],P2[1]-P1[1],P2[2]-P1[2]]
+ vector2 = [P2[0]-P3[0],P2[1]-P3[1],P2[2]-P3[2]]
 
 
   #ab hier https://stackoverflow.com/a/61043203
-
+#  print("vec1: " + str(vector1) + "\nvec2: " + str(vector2))
+ vector1[0] += 0.001
+ vector1[1] += 0.001
+ vector1[2] += 0.001
+ vector2[0] += 0.001
+ vector2[1] += 0.001
+ vector2[2] += 0.001
  unit_vector1= vector1 / np.linalg.norm(vector1)
  unit_vector2= vector2 / np.linalg.norm(vector2)
 

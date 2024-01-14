@@ -1,0 +1,68 @@
+[gd_scene load_steps=4 format=3 uid="uid://c68h4lb5tcjpj"]
+
+[ext_resource type="Script" path="res://visualizationManager.gd" id="1_vje5x"]
+[ext_resource type="Script" path="res://WebsocketInteractor.gd" id="2_flf4g"]
+[ext_resource type="Script" path="res://PythonScriptHandler.gd" id="3_mxv28"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="visualizationManager" type="Node3D" parent="."]
+script = ExtResource("1_vje5x")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="WebsocketInteractor" type="RichTextLabel" parent="CanvasLayer"]
+z_index = 1
+offset_left = 55.0
+offset_top = 37.0
+offset_right = 464.0
+offset_bottom = 336.0
+script = ExtResource("2_flf4g")
+
+[node name="PythonScriptHandler" type="RichTextLabel" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -276.0
+offset_top = -127.0
+offset_right = 268.0
+offset_bottom = 137.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 40
+script = ExtResource("3_mxv28")
+
+[node name="background" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.74902, 1, 0.894118, 1)
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 20.0
+offset_right = -220.0
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(862, 587)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 0.999191, 0.040219, 0, -0.040219, 0.999191, 0, 0.220885, 3.38903)
+current = true
+fov = 40.0
+
+[connection signal="BodyReceived" from="CanvasLayer/WebsocketInteractor" to="visualizationManager" method="_on_websocket_interactor_body_received"]
+[connection signal="tree_exiting" from="CanvasLayer/PythonScriptHandler" to="CanvasLayer/PythonScriptHandler" method="_on_tree_exiting"]
