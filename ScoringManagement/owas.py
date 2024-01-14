@@ -11,52 +11,52 @@ def owas_posture_code(Body,weight = 1):
  posture_code = [0,0,0,0]
 
  #Koordinaten bestimmung
- knieL = True if(Body.leftLeg.landmarks["knee"]..visibility > def_vis) else knieL = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
+ knieL = True if(Body.leftLeg.landmarks["knee"].visibility > def_vis) else False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  knieL_X = Body.leftLeg.landmarks["knee"].x
  knieL_Y = Body.leftLeg.landmarks["knee"].y
  knieL_Z = Body.leftLeg.landmarks["knee"].z
 
- knieR = True if(Body.rightLeg.landmarks["knee"].visibility > def_vis) else knieR = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
+ knieR = True if(Body.rightLeg.landmarks["knee"].visibility > def_vis) else False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  knieR_X = Body.rightLeg.landmarks["knee"].x
  knieR_Y = Body.rightLeg.landmarks["knee"].y
  knieR_Z = Body.rightLeg.landmarks["knee"].z
 
- fussgelenkL = True if(Body.leftLeg.landmarks["ankle"].visibility > def_vis) else fussgelenkL = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
+ fussgelenkL = True if(Body.leftLeg.landmarks["ankle"].visibility > def_vis) else False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  fussgelenkL_X = Body.leftLeg.landmarks["ankle"].x
  fussgelenkL_Y = Body.leftLeg.landmarks["ankle"].y
  fussgelenkL_Z = Body.leftLeg.landmarks["ankle"].z
 
- fussgelenkR = True if(Body.rightLeg.landmarks["ankle"].visibility > def_vis) else fussgelenkR = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
+ fussgelenkR = True if(Body.rightLeg.landmarks["ankle"].visibility > def_vis) else False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  fussgelenkR_X = Body.rightLeg.landmarks["ankle"].x
  fussgelenkR_Y = Body.rightLeg.landmarks["ankle"].y
  fussgelenkR_Z = Body.rightLeg.landmarks["ankle"].z
 
- huefteL = True if(Body.torso.landmarks["hipL"].visibility > def_vis) else huefteL = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
+ huefteL = True if(Body.torso.landmarks["hipL"].visibility > def_vis) else False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  huefteL_X = Body.torso.landmarks["hipL"].x
  huefteL_Y = Body.torso.landmarks["hipL"].y
  huefteL_Z = Body.torso.landmarks["hipL"].z
 
- huefteR = True if(Body.torso.landmarks["hipR"].visibility > def_vis) else huefteR = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
+ huefteR = True if(Body.torso.landmarks["hipR"].visibility > def_vis) else False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  huefteR_X = Body.torso.landmarks["hipR"].x
  huefteR_Y = Body.torso.landmarks["hipR"].y
  huefteR_Z = Body.torso.landmarks["hipR"].z
 
- schulterL = True if(Body.leftArm.landmarks["shoulder"].visibility > def_vis) else schulterL = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
+ schulterL = True if(Body.leftArm.landmarks["shoulder"].visibility > def_vis) else False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  schulterL_X = Body.leftArm.landmarks["shoulder"].x
  schulterL_Y = Body.leftArm.landmarks["shoulder"].y
  schulterL_Z = Body.leftArm.landmarks["shoulder"].z
 
- schulterR = True if(Body.rightArm.landmarks["shoulder"].visibility > def_vis) else schulterR = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
+ schulterR = True if(Body.rightArm.landmarks["shoulder"].visibility > def_vis) else False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  schulterR_X = Body.rightArm.landmarks["shoulder"].x
  schulterR_Y = Body.rightArm.landmarks["shoulder"].y
  schulterR_Z = Body.rightArm.landmarks["shoulder"].z
 
- handgelenkL = True if(Body.leftArm.landmarks["wrist"].visibility > def_vis) else handgelenkL = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
+ handgelenkL = True if(Body.leftArm.landmarks["wrist"].visibility > def_vis) else False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  handgelenkL_X = Body.leftArm.landmarks["wrist"].x
  handgelenkL_Y = Body.leftArm.landmarks["wrist"].y
  handgelenkL_Z = Body.leftArm.landmarks["wrist"].z
 
- handgelenkR = True if(Body.rightArm.landmarks["wrist"].visibility > def_vis) else handgelenkR = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
+ handgelenkR = True if(Body.rightArm.landmarks["wrist"].visibility > def_vis) else False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  handgelenkR_X = Body.rightArm.landmarks["wrist"].x
  handgelenkR_Y = Body.rightArm.landmarks["wrist"].y
  handgelenkR_Z = Body.rightArm.landmarks["wrist"].z
@@ -306,3 +306,10 @@ def owas_risk_frequenzy(posture_codes,short = True):
   #[id Position,Bewertung der Position] x3 (Position die am häufigsten vorkommt)
   return [[most_back+1,backs[most_back][int(fre_back[most_back])-1]],[most_arms+1,arms[most_arms][int(fre_arms[most_arms])-1] ],[most_legs+1,legs[most_legs][int(fre_legs[most_legs])-1]]]
  return "Error:short is not TRUE or FALSE"
+
+def GetOwasMessage(body: MainBody):
+ val = [0,0,0,0]
+ if (len(body.landmarks) != 0):
+  val = owas_posture_code(body)
+ msg = "OWAS|back: " + str(val[0]) + "\narms: " + str(val[1]) + "\nlegs: " + str(val[2]) + "\nweight: " + str(val[3])
+ return msg

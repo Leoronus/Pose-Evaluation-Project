@@ -12,6 +12,7 @@ from TrackingManagement.bodyParts import MainBody
 # from PIL import Image as image
 import websocketServer
 import ScoringManagement.rula as RULA
+import ScoringManagement.owas as OWAS
 
 
 mainBody = MainBody()
@@ -32,6 +33,7 @@ while True:
     if (body != None):
         serverThread.sendThis(bodyThread.getBodyMessage(body))
         serverThread.sendThis(RULA.getRulaMessage(body))
+        serverThread.sendThis(OWAS.GetOwasMessage(body))
     # if (smoothed != None): print("Nose position x (smoothed): ", smoothed.head.landmarks["nose"].x)
 
 

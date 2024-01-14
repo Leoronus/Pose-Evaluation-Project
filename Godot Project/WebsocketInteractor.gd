@@ -5,9 +5,10 @@ extends RichTextLabel
 
 var socket = WebSocketPeer.new()
 var connection_attempt_timer: float = 0
-var connection_attempt_interval: float = 1.0  # 1 second
+var connection_attempt_interval: float = 0.1  # 1 second
 signal BodyReceived(receivedLandmarks: Array[Dictionary])
 signal RulaRecieved(leftScore: int, rightScore: int)
+signal OwasReceived(postureCode: Dictionary)
 
 func _ready():
 	socket.connect_to_url(websocket_url)
@@ -38,6 +39,8 @@ func _process(delta):
 					BodyReceived.emit(dictArray)
 				elif(tag == "RULA"):
 					RulaRecieved.emit(dictArray[0]["left"], dictArray[0]["right"])
+				elif(tag == "OWAS"):
+					OwasReceived.emit(dictArray[0])
 
 func packet_to_string(packet: PackedByteArray) -> String:
 	var message: String = ""

@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://c68h4lb5tcjpj"]
+[gd_scene load_steps=6 format=3 uid="uid://c68h4lb5tcjpj"]
 
 [ext_resource type="Script" path="res://visualizationManager.gd" id="1_vje5x"]
 [ext_resource type="Script" path="res://WebsocketInteractor.gd" id="2_flf4g"]
 [ext_resource type="Script" path="res://PythonScriptHandler.gd" id="3_mxv28"]
+[ext_resource type="Script" path="res://RULA label.gd" id="4_ioyu8"]
+[ext_resource type="Script" path="res://OWAS label.gd" id="5_hplph"]
 
 [node name="Node3D" type="Node3D"]
 
@@ -64,5 +66,21 @@ transform = Transform3D(1, 0, 0, 0, 0.999191, 0.040219, 0, -0.040219, 0.999191, 
 current = true
 fov = 40.0
 
+[node name="RULA" type="RichTextLabel" parent="CanvasLayer"]
+offset_left = 915.0
+offset_top = 328.0
+offset_right = 1102.0
+offset_bottom = 458.0
+script = ExtResource("4_ioyu8")
+
+[node name="OWAS" type="RichTextLabel" parent="CanvasLayer"]
+offset_left = 691.0
+offset_top = 446.0
+offset_right = 874.0
+offset_bottom = 575.0
+script = ExtResource("5_hplph")
+
 [connection signal="BodyReceived" from="CanvasLayer/WebsocketInteractor" to="visualizationManager" method="_on_websocket_interactor_body_received"]
+[connection signal="OwasReceived" from="CanvasLayer/WebsocketInteractor" to="CanvasLayer/OWAS" method="_on_websocket_interactor_owas_received"]
+[connection signal="RulaRecieved" from="CanvasLayer/WebsocketInteractor" to="CanvasLayer/RULA" method="_on_websocket_interactor_rula_recieved"]
 [connection signal="tree_exiting" from="CanvasLayer/PythonScriptHandler" to="CanvasLayer/PythonScriptHandler" method="_on_tree_exiting"]
