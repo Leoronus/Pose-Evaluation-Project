@@ -11,7 +11,7 @@ def owas_posture_code(Body,weight = 1):
  posture_code = [0,0,0,0]
 
  #Koordinaten bestimmung
- knieL = True if(Body.leftLeg.landmarks["knee"]..visibility > def_vis) else False #Prüfwert ob der Punkt als sichtbar angesehen wird.
+ knieL = True if(Body.leftLeg.landmarks["knee"].visibility > def_vis) else False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  knieL_X = Body.leftLeg.landmarks["knee"].x
  knieL_Y = Body.leftLeg.landmarks["knee"].y
  knieL_Z = Body.leftLeg.landmarks["knee"].z
