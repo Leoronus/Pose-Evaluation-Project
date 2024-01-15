@@ -14,97 +14,97 @@ def rula_score(Body,gewicht = 1,statisch = False):
  #Koordinaten bestimmung
  huefteL = True if(Body.torso.landmarks["hipL"].visibility > def_vis) else huefteL = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  huefteL_X = Body.torso.landmarks["hipL"].x
- huefteL_Y = Body.torso.landmarks["hipL"].y
+ huefteL_Y = Body.torso.landmarks["hipL"].y *-1
  huefteL_Z = Body.torso.landmarks["hipL"].z
 
  huefteR = True if(Body.torso.landmarks["hipR"].visibility > def_vis) else huefteR = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  huefteR_X = Body.torso.landmarks["hipR"].x
- huefteR_Y = Body.torso.landmarks["hipR"].y
+ huefteR_Y = Body.torso.landmarks["hipR"].y *-1
  huefteR_Z = Body.torso.landmarks["hipR"].z
 
  knieL = True if(Body.leftLeg.landmarks["knee"].visibility > def_vis) else knieL = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  knieL_X = Body.leftLeg.landmarks["knee"].x
- knieL_Y = Body.leftLeg.landmarks["knee"].y
+ knieL_Y = Body.leftLeg.landmarks["knee"].y *-1
  knieL_Z = Body.leftLeg.landmarks["knee"].z
 
  knieR = True if(Body.rightLeg.landmarks["knee"].visibility > def_vis) else knieR = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  knieR_X = Body.rightLeg.landmarks["knee"].x
- knieR_Y = Body.rightLeg.landmarks["knee"].y
+ knieR_Y = Body.rightLeg.landmarks["knee"].y *-1
  knieR_Z = Body.rightLeg.landmarks["knee"].z
 
  fussgelenkL = True if(Body.leftLeg.landmarks["ankle"].visibility > def_vis) else fussgelenkL = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  fussgelenkL_X = Body.leftLeg.landmarks["ankle"].x
- fussgelenkL_Y = Body.leftLeg.landmarks["ankle"].y
+ fussgelenkL_Y = Body.leftLeg.landmarks["ankle"].y *-1
  fussgelenkL_Z = Body.leftLeg.landmarks["ankle"].z
 
  fussgelenkR = True if(Body.rightLeg.landmarks["ankle"].visibility > def_vis) else fussgelenkR = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  fussgelenkR_X = Body.rightLeg.landmarks["ankle"].x
- fussgelenkR_Y = Body.rightLeg.landmarks["ankle"].y
+ fussgelenkR_Y = Body.rightLeg.landmarks["ankle"].y *-1
  fussgelenkR_Z = Body.rightLeg.landmarks["ankle"].z
 
  schulterL= True if(Body.leftArm.landmarks["shoulder"].visibility > def_vis) else schulterL = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  schulterL_X = Body.leftArm.landmarks["shoulder"].x
- schulterL_Y = Body.leftArm.landmarks["shoulder"].y
+ schulterL_Y = Body.leftArm.landmarks["shoulder"].y *-1
  schulterL_Z = Body.leftArm.landmarks["shoulder"].z
 
  schulterR = True if(Body.rightArm.landmarks["shoulder"].visibility > def_vis) else schulterR = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  schulterR_X = Body.rightArm.landmarks["shoulder"].x
- schulterR_Y = Body.rightArm.landmarks["shoulder"].y
+ schulterR_Y = Body.rightArm.landmarks["shoulder"].y *-1
  schulterR_Z = Body.rightArm.landmarks["shoulder"].z
 
  elbogenL = True if(Body.leftArm.landmarks["elbow"].visibility > def_vis) else elbogenL = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  elbogenL_X = Body.leftArm.landmarks["elbow"].x
- elbogenL_Y = Body.leftArm.landmarks["elbow"].y
+ elbogenL_Y = Body.leftArm.landmarks["elbow"].y *-1
  elbogenL_Z = Body.leftArm.landmarks["elbow"].z
 
  elbogenR = True if(Body.rightArm.landmarks["elbow"].visibility > def_vis) else elbogenR = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  elbogenR_X = Body.rightArm.landmarks["elbow"].x
- elbogenR_Y = Body.rightArm.landmarks["elbow"].y
+ elbogenR_Y = Body.rightArm.landmarks["elbow"].y *-1
  elbogenR_Z = Body.rightArm.landmarks["elbow"].z
 
  handgelenkL = True if(Body.leftArm.landmarks["wrist"].visibility > def_vis) else handgelenkL = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  handgelenkL_X = Body.leftArm.landmarks["wrist"].x
- handgelenkL_Y = Body.leftArm.landmarks["wrist"].y
+ handgelenkL_Y = Body.leftArm.landmarks["wrist"].y *-1
  handgelenkL_Z = Body.leftArm.landmarks["wrist"].z
  
  handgelenkR = True if(Body.rightArm.landmarks["wrist"].visibility > def_vis) else handgelenkR = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  handgelenkR_X = Body.rightArm.landmarks["wrist"].x
- handgelenkR_Y = Body.rightArm.landmarks["wrist"].y
+ handgelenkR_Y = Body.rightArm.landmarks["wrist"].y *-1
  handgelenkR_Z = Body.rightArm.landmarks["wrist"].z
 
  zeigefingerR = True if(Body.rightArm.landmarks["index"].visibility > def_vis) else zeigefingerR = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  zeigefingerR_X = Body.rightArm.landmarks["index"].x
- zeigefingerR_Y = Body.rightArm.landmarks["index"].y
+ zeigefingerR_Y = Body.rightArm.landmarks["index"].y *-1
  zeigefingerR_Z = Body.rightArm.landmarks["index"].z
 
  zeigefingerL = True if(Body.leftArm.landmarks["index"].visibility > def_vis) else zeigefingerL = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  zeigefingerL_X = Body.leftArm.landmarks["index"].x
- zeigefingerL_Y = Body.leftArm.landmarks["index"].y
+ zeigefingerL_Y = Body.leftArm.landmarks["index"].y *-1
  zeigefingerL_Z = Body.leftArm.landmarks["index"].z
 
  daumenR= True if(Body.rightArm.landmarks["thumb"].visibility > def_vis) else daumenR = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  daumenR_X = Body.rightArm.landmarks["thumb"].x
- daumenR_Y = Body.rightArm.landmarks["thumb"].y
+ daumenR_Y = Body.rightArm.landmarks["thumb"].y *-1
  daumenR_Z = Body.rightArm.landmarks["thumb"].z
 
  daumenL = True if(Body.leftArm.landmarks["thumb"].visibility > def_vis) else daumenL = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  daumenL_X = Body.leftArm.landmarks["thumb"].x
- daumenL_Y = Body.leftArm.landmarks["thumb"].y
+ daumenL_Y = Body.leftArm.landmarks["thumb"].y *-1
  daumenL_Z = Body.leftArm.landmarks["thumb"].z
 
  nase = True if(Body.head.landmarks["nose"].visibility > def_vis) else nase = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  nase_X = Body.head.landmarks["nose"].x
- nase_Y = Body.head.landmarks["nose"].y
+ nase_Y = Body.head.landmarks["nose"].y *-1
  nase_Z = Body.head.landmarks["nose"].z
  
  augeR = True if(Body.head.landmarks["eyeR"].visibility > def_vis) else augeR = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  augeR_X = Body.head.landmarks["eyeR"].x
- augeR_Y = Body.head.landmarks["eyeR"].y
+ augeR_Y = Body.head.landmarks["eyeR"].y *-1
  augeR_Z = Body.head.landmarks["eyeR"].z
 
  augeL = True if(Body.head.landmarks["eyeL"].visibility > def_vis) else augeL = False #Prüfwert ob der Punkt als sichtbar angesehen wird.
  augeL_X = Body.head.landmarks["eyeL"].x
- augeL_Y = Body.head.landmarks["eyeL"].y
+ augeL_Y = Body.head.landmarks["eyeL"].y *-1
  augeL_Z = Body.head.landmarks["eyeL"].z
  #OberArm
   #Winkelbestimmung
