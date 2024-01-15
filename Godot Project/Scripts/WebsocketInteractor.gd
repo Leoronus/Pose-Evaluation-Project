@@ -5,7 +5,7 @@ extends RichTextLabel
 
 var socket = WebSocketPeer.new()
 var connection_attempt_timer: float = 0
-var connection_attempt_interval: float = 0.1  # 1 second
+var connection_attempt_interval: float = 1  # 1 second
 signal BodyReceived(receivedLandmarks: Array[Dictionary])
 signal RulaRecieved(leftScore: int, rightScore: int)
 signal OwasReceived(postureCode: Dictionary)
