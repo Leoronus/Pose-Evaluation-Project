@@ -6,6 +6,8 @@ extends RichTextLabel
 var socket = WebSocketPeer.new()
 var connection_attempt_timer: float = 0
 var connection_attempt_interval: float = 1  # 1 second
+var play: bool = true
+
 signal BodyReceived(receivedLandmarks: Array[Dictionary])
 signal RulaRecieved(leftScore: int, rightScore: int)
 signal OwasReceived(postureCode: Dictionary)
@@ -21,7 +23,12 @@ func _process(delta):
 
 	if connection_attempt_timer >= connection_attempt_interval && state == WebSocketPeer.STATE_CONNECTING:
 		connection_attempt_timer = 0
+		var count: int = int(Time.get_unix_time_from_system()) % 4
+		var s: String
+		for i in count:
+			s += "."
 		print("Trying to connect")
+		text = "Trying to connect to backend" + s
 		
 	if state == WebSocketPeer.STATE_OPEN:
 		text = ""
@@ -32,13 +39,14 @@ func _process(delta):
 			var parsedArray: Array = Parser(message)
 			var tag: String = parsedArray[0]
 			var dictArray: Array[Dictionary] = parsedArray[1]
-			if (dictArray.size() != 0):
+			if (dictArray.size() != 0 && play):
 				if(tag == "Body" && dictArray.size() == 33):
 					BodyReceived.emit(dictArray)
 				elif(tag == "RULA"):
 					RulaRecieved.emit(dictArray[0]["left"], dictArray[0]["right"])
 				elif(tag == "OWAS"):
 					OwasReceived.emit(dictArray[0])
+
 
 func packet_to_string(packet: PackedByteArray) -> String:
 	var message: String = ""
@@ -61,3 +69,7 @@ func Parser(message: String) -> Array:
 	var returnArray: Array = [msgArray[0], dictArray]
 	return returnArray
 	
+
+
+func _on_play_pause_button_up():
+	play = !play

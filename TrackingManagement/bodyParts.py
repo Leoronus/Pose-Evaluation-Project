@@ -97,6 +97,8 @@ class MainBody:
             self.__inited = True
             self.__MPResultTemplate = mediapipeResults
             self.landmarks = mediapipeResults.pose_world_landmarks.landmark
+            for landmark in self.landmarks:
+                landmark.y *= -1
             self.leftArm.update(self.landmarks, 'L')
             self.rightArm.update(self.landmarks, 'R')
             self.leftLeg.update(self.landmarks, 'L')
