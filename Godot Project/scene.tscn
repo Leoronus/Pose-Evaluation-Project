@@ -29,7 +29,6 @@ PanelContainer/styles/panel = SubResource("StyleBoxFlat_g3f6r")
 
 [node name="visualizationManager" type="Node3D" parent="."]
 script = ExtResource("1_vje5x")
-sphereSize = 0.2
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3

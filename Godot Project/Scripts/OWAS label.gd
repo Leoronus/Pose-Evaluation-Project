@@ -13,4 +13,4 @@ func _process(delta):
 
 func _on_websocket_interactor_owas_received(postureCode):
 	var pc: Dictionary = postureCode
-	text = "back: " + str(pc["back"]) + "\narms: " + str(pc["arms"]) + "\nlegs" + str(pc["legs: "]) + "\nweight: " + str(pc["weight"])
+	text = "back: " + str(pc["back"]) + "\narms: " + str(pc["arms"]) + "\nlegs: " + str(pc["legs"]) + "\nweight: " + str(pc["weight"])
