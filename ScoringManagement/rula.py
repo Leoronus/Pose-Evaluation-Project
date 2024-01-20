@@ -184,10 +184,28 @@ def rula_score(Body,gewicht = 1,statisch = False):
   
  
  #Handgelenk
-  #Winkelbestimmung - Nicht Implementiert
-  #Addieren bei seitlicher krümmung
- handgelenk_wertL = 1
- handgelenk_wertR = 1
+ #Winkel(Zeigefinger, Handgelenk, ellebogen)
+ if(handgelenkR):
+   hand_winkelR = winkel([zeigefingerR_X,zeigefingerR_Y,zeigefingerR_Z],[handgelenkR_X,handgelenkR_Y,handgelenkR_Z],[elbogenR_X,elbogenR_Y,elbogenR_Z])
+   if((180 - hand_winkelR) >15):
+     handgelenk_wertR = 3
+   elif((180 - hand_winkelR) >5 and (180- hand_winkelR) <=15):
+     handgelenk_wertR = 2
+   else:
+     handgelenk_wertR = 1
+ else:
+  handgelenk_wertR = 1
+
+ if(handgelenkL):
+   hand_winkelL = winkel([zeigefingerL_X,zeigefingerL_Y,zeigefingerL_Z],[handgelenkL_X,handgelenkL_Y,handgelenkL_Z],[elbogenL_X,elbogenL_Y,elbogenL_Z])
+   if((180 - hand_winkelL) >15):
+     handgelenk_wertL = 3
+   elif((180 - hand_winkelL) >5 and (180- hand_winkelL) <=15):
+     handgelenk_wertL = 2
+   else:
+     handgelenk_wertL = 1
+ else:
+  handgelenk_wertL = 1
 
  #Arm Gedreht - Nicht Implementiert
  armgedreht_wertL = 1
