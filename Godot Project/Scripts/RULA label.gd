@@ -7,9 +7,9 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
 
 
-func _on_websocket_interactor_rula_recieved(leftScore, rightScore):
+func _on_websocket_interactor_rula_received(leftScore, rightScore):
 	text = "RULA left: " + str(leftScore) + "\nRULA right: " + str(rightScore)

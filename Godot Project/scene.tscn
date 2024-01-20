@@ -200,7 +200,7 @@ icons = Array[Texture2D]([ExtResource("7_fwcpt"), ExtResource("9_mq5h3")])
 [connection signal="BodyReceived" from="Control/CanvasLayer/WebsocketInteractor" to="visualizationManager" method="_on_websocket_interactor_body_received"]
 [connection signal="BodyReceived" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/PlayPause" method="_on_websocket_interactor_body_received"]
 [connection signal="OwasReceived" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/Panel/VBoxContainer/PanelContainer2/VBoxContainer/OWAS text" method="_on_websocket_interactor_owas_received"]
-[connection signal="RulaRecieved" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/Panel/VBoxContainer/PanelContainer/VBoxContainer/RULA text" method="_on_websocket_interactor_rula_recieved"]
+[connection signal="RulaReceived" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/Panel/VBoxContainer/PanelContainer/VBoxContainer/RULA text" method="_on_websocket_interactor_rula_received"]
 [connection signal="tree_exiting" from="Control/CanvasLayer/PythonScriptHandler" to="Control/CanvasLayer/PythonScriptHandler" method="_on_tree_exiting"]
 [connection signal="button_up" from="Control/CanvasLayer/PlayPause" to="Control/CanvasLayer/WebsocketInteractor" method="_on_play_pause_button_up"]
 [connection signal="button_up" from="Control/CanvasLayer/PlayPause" to="Control/CanvasLayer/PlayPause" method="_on_button_up"]

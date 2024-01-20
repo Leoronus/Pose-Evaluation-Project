@@ -122,7 +122,7 @@ class MainBody:
     def getSmoothed(self):
         '''Gibt ein Mainbody-Objekt mit Smoothing zurück (Koordinaten gemittelt über X Schritte). Smoothing-Stärke kann in tracking_vars.py angepasst werden.'''
         if(len(self.__smoothingArray) > 0 and self.__inited):
-            smoothed = MainBody
+            smoothed = MainBody()
             tempListVal = []
             tempListNr = []
             for i in range(33):
@@ -156,5 +156,5 @@ class MainBody:
                     result.pose_world_landmarks.landmark[i].y = tempListVal[i].y
                     result.pose_world_landmarks.landmark[i].z = tempListVal[i].z
                     result.pose_world_landmarks.landmark[i].visibility = tempListVal[i].visibility
-                smoothed.updateLandmarks(self, result)
+                smoothed.updateLandmarks(result)
             return smoothed

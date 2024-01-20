@@ -239,6 +239,7 @@ def rula_score(Body,gewicht = 1,statisch = False):
 
  #Hals
   #Bestimmung Winkel
+ hals = 0
  if(not(nase)):
   hals_wert = 1
   mitte = [(schulterL_X + schulterR_X) /2,(schulterL_Y + schulterR_Y) /2,(schulterL_Z + schulterR_Z) /2]
