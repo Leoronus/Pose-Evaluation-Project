@@ -2,6 +2,7 @@ import TrackingManagement.body
 import threading
 import time
 
+# Zuständig ausschließlich für die Aufnahme von Daten aus bodyThread
 class RecorderThread(threading.Thread):
     recording = False
     bodyThread = None

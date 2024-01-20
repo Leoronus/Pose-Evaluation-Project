@@ -308,6 +308,7 @@ def owas_risk_frequenzy(posture_codes,short = True):
  return "Error:short is not TRUE or FALSE"
 
 def GetOwasMessage(body: MainBody):
+ '''Baut eine Nachricht mit OWAS-Ergebnissen des übergebenen MainBody-Objektes, welche der Parser des GUI versteht, und gibt sie zurück.'''
  val = [0,0,0,0]
  if (len(body.landmarks) != 0):
   val = owas_posture_code(body)

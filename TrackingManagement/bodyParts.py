@@ -6,6 +6,7 @@ from mediapipe.tasks.python.components.containers import Landmark
 import TrackingManagement.tracking_vars
 
 
+# Enthält ein Dictionary mit relevanten Landmarks für einen Arm.
 class Arm:
     landmarks = {
         "shoulder"  : Landmark(),
@@ -15,7 +16,7 @@ class Arm:
         "index"     : Landmark(),
         "thumb"     : Landmark()
     }
-    '''Access like "landmarks["choice"]". Choices are shoulder, elbow, wrist, pinkie, index, thumb.'''
+    '''Zugriff nach Format "landmarks[<choice: String>]". Zur Auswahl stehen shoulder, elbow, wrist, pinkie, index, thumb.'''
 
     def update(self, newMarks, side):
         self.landmarks["shoulder"]  = newMarks[11] if (side == 'L') else newMarks[12]
@@ -26,6 +27,7 @@ class Arm:
         self.landmarks["thumb"   ]  = newMarks[21] if (side == 'L') else newMarks[22]
 
 
+# Enthält ein Dictionary mit relevanten Landmarks für ein Bein.
 class Leg:
     landmarks = {
         "hip"       : Landmark(),
@@ -34,7 +36,7 @@ class Leg:
         "heel"      : Landmark(),
         "toes"      : Landmark()
     }
-    '''Access like "landmarks["choice"]". Choices are hip, knee, ankle, heel, toes.'''
+    '''Zugriff nach Format "landmarks[<choice: String>]". Zur Auswahl stehen hip, knee, ankle, heel, toes.'''
 
     def update(self, newMarks, side):
         self.landmarks["hip"  ]   = newMarks[23] if (side == 'L') else newMarks[24]
@@ -44,6 +46,7 @@ class Leg:
         self.landmarks["toes" ]   = newMarks[31] if (side == 'L') else newMarks[32]
 
 
+# Enthält ein Dictionary mit relevanten Landmarks für den Kopf.
 class Head:
     landmarks = {
         "nose"      : Landmark(),
@@ -52,7 +55,7 @@ class Head:
         "mouthL"    : Landmark(),
         "mouthR"    : Landmark()
     }
-    '''Access like "landmarks["choice"]". Choices are nose, eyeL, eyeR, mouthL, mouthR.'''
+    '''Zugriff nach Format "landmarks[<choice: String>]". Zur Auswahl stehen nose, eyeL, eyeR, mouthL, mouthR.'''
 
     def update(self, newMarks):
         self.landmarks["nose"  ] = newMarks[0]  
@@ -62,6 +65,7 @@ class Head:
         self.landmarks["mouthR"] = newMarks[10]
 
 
+# Enthält ein Dictionary mit relevanten Landmarks für den Torso.
 class Torso:
     landmarks = {
         "shoulderL" : Landmark(),
@@ -69,7 +73,7 @@ class Torso:
         "hipL"      : Landmark(),
         "hipR"      : Landmark()
     }
-    '''Access like "landmarks["choice"]". Choices are shoulderL, shoulderR, hipL, hipR.'''
+    '''Zugriff nach Format "landmarks[<choice: String>]". Zur Auswahl stehen shoulderL, shoulderR, hipL, hipR.'''
 
     def update(self, newMarks):
         self.landmarks["shoulderL"] = newMarks[0]  
@@ -78,8 +82,9 @@ class Torso:
         self.landmarks["hipR"     ] = newMarks[9]
 
 
+# Klasse für Strukturierung von Landmark-Daten
 class MainBody:
-    landmarks = []
+    landmarks = [] # Array mit allen Landmarks, Nummerierung wie in pose_landmarks_index.png
     leftArm = Arm()
     rightArm = Arm()
     leftLeg = Leg()
@@ -92,7 +97,9 @@ class MainBody:
     __smoothingProgress = 0
     __smoothingArray = []
     __MPResultTemplate = None
+
     def updateLandmarks(self, mediapipeResults):
+        '''Aktualisiert Landmarks aus übergebenen Mediapipe-Ergebnissen.'''
         if (mediapipeResults.pose_world_landmarks != None):
             self.__inited = True
             self.__MPResultTemplate = mediapipeResults
@@ -113,6 +120,7 @@ class MainBody:
         self.__smoothingProgress += 1
 
     def getSmoothed(self):
+        '''Gibt ein Mainbody-Objekt mit Smoothing zurück (Koordinaten gemittelt über X Schritte). Smoothing-Stärke kann in tracking_vars.py angepasst werden.'''
         if(len(self.__smoothingArray) > 0 and self.__inited):
             smoothed = MainBody
             tempListVal = []

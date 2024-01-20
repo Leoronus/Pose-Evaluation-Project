@@ -379,6 +379,7 @@ def rula_score(Body,gewicht = 1,statisch = False):
  return scoreL , scoreR #gibt einen Wert zwischen 1 und 7 zurück, Erster Wert ist Linke seite, zweiter wert ist Rechte seite
 
 def getRulaMessage(body: MainBody):
+  '''Baut eine Nachricht mit RULA-Ergebnissen des übergebenen MainBody-Objektes, welche der Parser des GUI versteht, und gibt sie zurück.'''
   scoreL = 0
   scoreR = 0
   if (len(body.landmarks) != 0):

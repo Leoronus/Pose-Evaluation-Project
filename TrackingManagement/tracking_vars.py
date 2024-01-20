@@ -5,8 +5,14 @@ HEIGHT = 360
 
 KILL_THREADS = False
 
+# Startet ein Fenster was Mediapipe-Landmarks über dem Camera-Feed anzeigt
 DEBUG = False
 
-MODEL_COMPLEXITY = 2
+# Stellt die Genauigkeit des Modells ein, welches Mediapipe benutzt
+# 0 -> schnell
+# 1 -> balanced
+# 2 -> genau
+MODEL_COMPLEXITY = 1
 
+# Stellt ein, über wie viele SChritte gemittelt werden soll
 SMOOTHING_STEPS = 3
