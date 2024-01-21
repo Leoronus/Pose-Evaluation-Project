@@ -1,4 +1,4 @@
 # Pose-Evaluation-Project
 ## Setup
-With Python installed, open a terminal and enter `pip install mediapipe` and `pip install websocket-server`.
-Execute from main.py and PoseEval 0.X.exe.
+Mit Python 3.8-11 installiert, öffne ein Terminal und gib nacheinander `pip install numpy`, `pip install mediapipe` und `pip install websocket-server` ein.
+Führe entweder main.py und PoseEval 0.X.exe zusammen oder nur PoseEval 0.X standalone aus.
