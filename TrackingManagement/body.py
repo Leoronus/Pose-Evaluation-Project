@@ -92,7 +92,7 @@ class BodyThread(threading.Thread):
         if (self.mainBody != None):
             return self.mainBody
         
-    def getSmoothedBody(self):
+    def getSmoothedBody(self): # KAPUTT
         '''Gibt ein Mainbody-Objekt mit Smoothing zurück (Koordinaten gemittelt über X Schritte). Smoothing-Stärke kann in tracking_vars.py angepasst werden.'''
         if (self.mainBody != None):
             return self.mainBody.getSmoothed()

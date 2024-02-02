@@ -1,3 +1,5 @@
+from collections.abc import Callable, Iterable, Mapping
+from typing import Any
 from websocket_server import WebsocketServer
 import threading
 import time
@@ -7,6 +9,10 @@ import time
 class WebsocketServerThread(threading.Thread):
     _clientConnected = False
     _clientConnectedLock = threading.Lock()
+
+    def __init__(self, callback):
+        super(WebsocketServerThread, self).__init__()
+        self.messageReceivedCallback = callback
 
     # Callback für neu verbundenen Client 
     def newClient(self, client, server):
@@ -33,6 +39,7 @@ class WebsocketServerThread(threading.Thread):
         if len(message) > 200:
             message = message[:200] + '..'
         print(f"Client({client['id']}) said: {message}")
+        self.messageReceivedCallback(message)
 
     def run(self):
         PORT = 9001

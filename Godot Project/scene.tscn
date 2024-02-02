@@ -29,6 +29,7 @@ PanelContainer/styles/panel = SubResource("StyleBoxFlat_g3f6r")
 
 [node name="visualizationManager" type="Node3D" parent="."]
 script = ExtResource("1_vje5x")
+snapFactor = 0.1
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -46,10 +47,10 @@ anchor_left = 0.392
 anchor_top = 0.435
 anchor_right = 0.392
 anchor_bottom = 0.435
-offset_left = -212.584
-offset_top = -99.88
-offset_right = 213.416
-offset_bottom = 100.12
+offset_left = -159.584
+offset_top = 43.12
+offset_right = 266.416
+offset_bottom = 243.12
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 20
 text = "test"
@@ -70,7 +71,6 @@ grow_vertical = 2
 theme_override_colors/default_color = Color(1, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 40
 script = ExtResource("3_mxv28")
-startBackend = true
 
 [node name="background" type="ColorRect" parent="Control/CanvasLayer"]
 anchors_preset = 15
@@ -197,6 +197,13 @@ expand_icon = true
 script = ExtResource("8_dmoa8")
 icons = Array[Texture2D]([ExtResource("7_fwcpt"), ExtResource("9_mq5h3")])
 
+[node name="Button" type="Button" parent="Control/CanvasLayer"]
+offset_left = 964.0
+offset_top = 578.0
+offset_right = 972.0
+offset_bottom = 586.0
+scale = Vector2(4.15285, 4.15285)
+
 [connection signal="BodyReceived" from="Control/CanvasLayer/WebsocketInteractor" to="visualizationManager" method="_on_websocket_interactor_body_received"]
 [connection signal="BodyReceived" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/PlayPause" method="_on_websocket_interactor_body_received"]
 [connection signal="OwasReceived" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/Panel/VBoxContainer/PanelContainer2/VBoxContainer/OWAS text" method="_on_websocket_interactor_owas_received"]
@@ -204,3 +211,4 @@ icons = Array[Texture2D]([ExtResource("7_fwcpt"), ExtResource("9_mq5h3")])
 [connection signal="tree_exiting" from="Control/CanvasLayer/PythonScriptHandler" to="Control/CanvasLayer/PythonScriptHandler" method="_on_tree_exiting"]
 [connection signal="button_up" from="Control/CanvasLayer/PlayPause" to="Control/CanvasLayer/WebsocketInteractor" method="_on_play_pause_button_up"]
 [connection signal="button_up" from="Control/CanvasLayer/PlayPause" to="Control/CanvasLayer/PlayPause" method="_on_button_up"]
+[connection signal="button_up" from="Control/CanvasLayer/Button" to="Control/CanvasLayer/WebsocketInteractor" method="_on_button_button_up"]

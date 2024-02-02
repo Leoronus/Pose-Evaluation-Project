@@ -80,3 +80,7 @@ func Parser(message: String) -> Array:
 
 func _on_play_pause_button_up():
 	play = !play
+
+
+func _on_button_button_up():
+	_socket.send_text("whoop")

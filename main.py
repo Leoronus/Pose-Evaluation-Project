@@ -11,6 +11,11 @@ import ScoringManagement.owas as OWAS
 
 
 
+def MessageCallback(msg: str):
+    print ("I got something")
+
+
+
 # Objekt für die Daten, die mediapipe liefert
 mainBody = MainBody()
 
@@ -19,7 +24,7 @@ bodyThread = BodyThread()
 bodyThread.start()   
 
 # Separater Thread für Kommunikation mit GUI
-serverThread = websocketServer.WebsocketServerThread()
+serverThread = websocketServer.WebsocketServerThread(MessageCallback)
 serverThread.start()
 socketConnected = False
 
