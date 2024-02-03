@@ -275,20 +275,19 @@ def rula_score(Body,gewicht = 1,statisch = False):
         hals = winkel([mitte[0],nase_Y,nase_Z],mitte, [mitte[0],mitte[1]-5,mitte[2]]) #winkel zwischen nase, einem punkt zwischen den schultern und diesem punkt um 5 nach unten verschoben, verwende x Koordinaten des mittelpunkts für die nase um links/rechst beugung auszuschließen
         #Grad als Abweichung von 180 Grad - Bei 0 Grad währe der Winkel des Kopfes 180 Grad
         hals_wert = 1
-        if((180- hals) < 15) :
+        if(hals >107 and hals < 95) :
             hals_wert = 1
-        elif(((180 -hals)>= 15) and ((180- hals) < 25)):
+        elif(hals<= 95):
             hals_wert = 2
-        elif((180 - hals) >= 25):
+        elif(hals <= 90):
             hals_wert = 3
-
-        if(nase_Z > mitte[2] ): #Kopf ist nach hinten gebeugt
+        elif(hals >= 107): #Kopf ist nach hinten gebeugt
             hals_wert = 4
 
         #Berechnung eines neuen Hals Winkels für eine Bestimmung eines anderen Winkels
         hals_neigung = winkel([nase_X,nase_Y,nase_Z],mitte,[schulterL_X,schulterL_Y,schulterL_Z])
 
-        if(hals_neigung > 95 or hals < 85):
+        if(hals_neigung > 85 or hals < 80):
             hals_wert = hals_wert+1
 
         #Berechne Drehung des Kopfes
@@ -299,11 +298,11 @@ def rula_score(Body,gewicht = 1,statisch = False):
             eye2 = winkel([augeR_X,augeR_Y,augeR_Z],eyeM,[augeR_X,augeR_Y,augeL_Z])
 
         # 10 Grad als Fehler Tolleranz
-            if(eye1 > 10 or eye2 > 10) :
+            if(eye1 > 110 or eye2 > 110) :
                 hals_wert = hals_wert + 1
   
     #Oberkörper, Rechte und Linke bewertung verwenden den Selben Rücken Wert
-    if(not(schulterR) and not(schulterL)): return "Schultern nicht erkennbar"
+    if(not(schulterR) and not(schulterL)): return "Error|Error_msg: Schultern wurden nicht erkannt."
     else:
         #Bestimmung Winkel
         rueckenL = winkel([knieL_X,knieL_Y,knieL_Z],
@@ -314,16 +313,36 @@ def rula_score(Body,gewicht = 1,statisch = False):
                  [huefteR_X,huefteR_Y,huefteR_Z],
                  [schulterR_X,schulterR_Y,schulterR_Z])
 
+        #Wenn oberkörper zur seite gebeugt ist
+        #Seitliche Beugung mittels Neigung Rücken, aber Z der schulter auf Z der Hüfte gesetzt
+        #Bester wert um Beugung nach Vorne wahr zu nehmen
+        beugungL = winkel([knieL_X,knieL_Y,knieL_Z],
+                          [huefteL_X,huefteL_Y,huefteL_Z],
+                          [schulterL_X,schulterL_Y,huefteL_Z])
+
+        beugungR = winkel([knieR_X,knieR_Y,knieR_Z],
+                          [huefteR_X,huefteR_Y,huefteR_Z],
+                          [schulterR_X,schulterR_Y,huefteR_Z])
+
         #2 Punkte ziwschen 0 und 20 Grad ( 5 grad abweichung hier für ungenauigkeit)
         #nehme kein elif damit temp den höchsten wert bekommt der True ist
         oberkoerper_wert = 1
+        '''
         if(rueckenL>5 or rueckenR > 5):
             oberkoerper_wert=2
         if ((rueckenL >= 20 and rueckenL < 60 ) or (rueckenR >= 20 and rueckenR < 60)):
             oberkoerper_wert = 3
         if (rueckenL> 60 or rueckenR > 60 ) :
             oberkoerper_wert = 4
-
+        '''
+        if beugungR > 80 or beugungL > 80:
+            oberkoerper_wert = 4
+        elif beugungR > 70 or beugungL > 75:
+            oberkoerper_wert = 3
+        elif beugungR > 52 or beugungL > 50:
+            oberkoerper_wert = 2
+        else:
+            oberkoerper_wert = 1
         #weitere bedingung bei gedrehtem oberkörper
         mitte = [(huefteL_X + huefteR_X)/2,(huefteL_Y + huefteR_Y)/2, (huefteL_Z + huefteR_Z)/2] #mitte Punkt wischen den Beiden Hüft Punkten, verwendet für die Torsion des Oberkörpers durch den Winkel wzischen Hüfte Mittel und schulter(y wert auf wert der hüfte gesetzt)
 
@@ -331,19 +350,15 @@ def rula_score(Body,gewicht = 1,statisch = False):
                   mitte,
                   [schulterL_X,huefteL_Y,schulterL_Z])
 
-        if(torsion >= 20):
-            oberkoerper_wert = oberkoerper_wert + 1
+        if(torsion >= 120):
+            if beugungL > 60:
+                if torsion > 130 or torsion <120:
+                    oberkoerper_wert = oberkoerper_wert + 1
+            else:
+                oberkoerper_wert = oberkoerper_wert + 1
 
-        #Wenn oberkörper zur seite gebeugt ist
-        #Seitliche Beugung mittels Neigung Rücken, aber Z der schulter auf Z der Hüfte gesetzt
-        beugungL = winkel([knieL_X,knieL_Y,knieL_Z],
-                 [huefteL_X,huefteL_Y,huefteL_Z],
-                 [schulterL_X,schulterL_Y,huefteL_Z])
 
-        beugungR = winkel([knieR_X,knieR_Y,knieR_Z],
-                 [huefteR_X,huefteR_Y,huefteR_Z],
-                 [schulterR_X,schulterR_Y,huefteR_Z])
-        if (beugungL < 175 or beugungR < 175) :
+        if (rueckenL > 51 or rueckenR < 58) :
             oberkoerper_wert = oberkoerper_wert + 1
 
     #Beine
@@ -396,9 +411,6 @@ def rula_score(Body,gewicht = 1,statisch = False):
 
     scoreL = gesamt_wert[armL-1][oberkoerper-1]
     scoreR = gesamt_wert[armR-1][oberkoerper-1]
-
-    #scoreL = oberkoerper
-    #scoreR = bein_wert
 
     return scoreL, scoreR #gibt einen Wert zwischen 1 und 7 zurück, Erster Wert ist Linke seite, zweiter wert ist Rechte seite
 
