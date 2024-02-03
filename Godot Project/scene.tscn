@@ -33,6 +33,7 @@ PanelContainer/styles/panel = SubResource("StyleBoxFlat_g3f6r")
 
 [node name="visualizationManager" type="Node3D" parent="."]
 script = ExtResource("1_vje5x")
+sphereSize = 0.075
 snapFactor = 0.1
 
 [node name="Control" type="Control" parent="."]
@@ -75,6 +76,7 @@ grow_vertical = 2
 theme_override_colors/default_color = Color(1, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 40
 script = ExtResource("3_mxv28")
+startBackend = true
 
 [node name="background" type="ColorRect" parent="Control/CanvasLayer"]
 anchors_preset = 15

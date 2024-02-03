@@ -6,6 +6,20 @@ var landmarkTargets: Array[Vector3] ## Array of targets, to which the nodes are 
 @export var sphereSize: float = 0.1 ## Scaling factor for all indicator spheres, adjustable from inspector.
 @export var snapFactor: float = 0.8
 var doneLoading: bool = false
+var boneArray: Array[Array] = [\
+		[0,2],[0,5],[2,7],\
+		[5,8],[9,10],[11,12],\
+		[11,13],[11,23],[12,14],\
+		[12,24],[13,15],[14,16],\
+		[15,17],[15,19],[15,21],\
+		[16,18],[16,20],[16,22],\
+		[17,19],[18,20],[23,24],\
+		[23,25],[24,26],[25,27],\
+		[26,28],[27,29],[27,31],\
+		[28,30],[28,32],[29,31],\
+		[30,32]\
+		]
+var bones: Array[MeshInstance3D] = []
 
 
 func _ready():
@@ -31,8 +45,37 @@ func _process(delta):
 	if(!doneLoading):
 		rotation_degrees += Vector3(0, 0, -90 * delta)
 	else:
+		#var timespan: float = Time.get_unix_time_from_system()
 		$"../Control/CanvasLayer/RecordingButton".init = true
 		rotation_degrees = Vector3.ZERO
+		for bone in bones:
+			bone.queue_free()
+		bones.clear()
+		for bonePair in boneArray:
+			bones.append(line(landmarks[bonePair[0]].global_position, landmarks[bonePair[1]].transform.origin))
+		
+		#timespan = Time.get_unix_time_from_system() - timespan
+		#print(timespan)
+
+
+func line(pos1: Vector3, pos2: Vector3, color = Color.WHITE_SMOKE) -> MeshInstance3D:
+	var mesh_instance := MeshInstance3D.new()
+	var immediate_mesh := ImmediateMesh.new()
+	var material := ORMMaterial3D.new()
+	
+	mesh_instance.mesh = immediate_mesh
+	mesh_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	
+	immediate_mesh.surface_begin(Mesh.PRIMITIVE_LINES, material)
+	immediate_mesh.surface_add_vertex(pos1)
+	immediate_mesh.surface_add_vertex(pos2)
+	immediate_mesh.surface_end()
+	
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	material.albedo_color = color
+	
+	get_tree().get_root().add_child(mesh_instance)
+	return mesh_instance
 
 
 ## Updates indicator positions. Must be connected to the bodyReceived signal.
@@ -41,3 +84,4 @@ func _on_websocket_interactor_body_received(receivedLandmarks: Array[Dictionary]
 	for i in 33:
 		var mark = receivedLandmarks[i]
 		landmarkTargets[i] = Vector3(float(mark["x"]), float(mark["y"]), float(mark["z"]))
+		landmarks[i].transparency = 1 - float(mark["visibility"])
