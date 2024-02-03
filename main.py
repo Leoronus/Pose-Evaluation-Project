@@ -8,11 +8,10 @@ from TrackingManagement.bodyParts import MainBody
 import websocketServer
 import ScoringManagement.rula as RULA
 import ScoringManagement.owas as OWAS
+import ScoringManagement.LongTimeEval as LongTimeEval
 
 
 
-def MessageCallback(msg: str):
-    print ("I got something")
 
 
 
@@ -22,6 +21,20 @@ mainBody = MainBody()
 # Separater Thread, der mediapipe verwaltet
 bodyThread = BodyThread()
 bodyThread.start()   
+recordingInProgress = False
+record = None
+recordingMsg = ""
+
+def MessageCallback(msg: str):
+    global recordingInProgress, record, recordingMsg
+    if msg == "recording":
+        if not recordingInProgress:
+            bodyThread.StartRecording(2, False)
+            recordingInProgress = True
+        else:
+            record = bodyThread.StopRecording()
+            recordingInProgress = False
+            recordingMsg = LongTimeEval.LongTimeEval(record)
 
 # Separater Thread für Kommunikation mit GUI
 serverThread = websocketServer.WebsocketServerThread(MessageCallback)
@@ -48,6 +61,11 @@ while True:
         # print(bodyThread.getBodyMessage(mainBody))
         serverThread.sendThis(RULA.getRulaMessage(mainBody))
         serverThread.sendThis(OWAS.GetOwasMessage(mainBody))
+        if (recordingMsg != ""):
+            print(recordingMsg)
+            serverThread.sendThis(recordingMsg)
+            recordingMsg = ""
+
 
     # Datenübertragung auf 30Hz begrenzt
     time.sleep(0.0333)

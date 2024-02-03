@@ -108,7 +108,8 @@ class BodyThread(threading.Thread):
     def StopRecording(self):
         '''Beendet die Aufnahme und gibt Aufnahmeergebnis zurück als 2D-Array im Format [[timeStamp: float, body: MainBody], [...]]'''
         self.__recorder.recording = False
-        return self.__recorder.record
+        record = self.__recorder.record
+        return record
         
     def getBodyMessage(self, body: MainBody):
         '''Baut eine Nachricht aus Landmark-Daten des übergebenen MainBody-Objektes, welche der Parser des GUI versteht, und gibt sie zurück.'''

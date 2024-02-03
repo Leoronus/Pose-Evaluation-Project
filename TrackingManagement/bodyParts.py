@@ -4,6 +4,7 @@ from mediapipe.tasks.python import components
 from mediapipe.tasks.python.components import containers
 from mediapipe.tasks.python.components.containers import Landmark
 import TrackingManagement.tracking_vars
+import copy
 
 
 # Enthält ein Dictionary mit relevanten Landmarks für einen Arm.
@@ -150,7 +151,7 @@ class MainBody:
                 tempListVal[index].visibility = tempListVal[index].visibility / (tempListNr[index] + 0.0001)
 
             if (self.__MPResultTemplate != None and self.__MPResultTemplate.pose_world_landmarks != None):
-                result = self.__MPResultTemplate
+                result = copy.deepcopy(self.__MPResultTemplate)
                 for i in range(33):
                     result.pose_world_landmarks.landmark[i].x = tempListVal[i].x
                     result.pose_world_landmarks.landmark[i].y = tempListVal[i].y

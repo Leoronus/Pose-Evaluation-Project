@@ -15,7 +15,7 @@ func _ready():
 		sphere.mesh = SphereMesh.new() # assign generic sphere mesh
 		sphere.name = "landmark " + str(i)
 		var angle_rad: float = deg_to_rad(10 * i)
-		sphere.transform.origin = Vector3(cos(angle_rad), sin(angle_rad), 0.0) # randomize each node's position, doesn't serve any real purpose
+		sphere.transform.origin = Vector3(cos(angle_rad), sin(angle_rad), 0.0)
 		sphere.scale = Vector3(1,1,1) * sphereSize
 		landmarks.append(sphere)
 		add_child(sphere) # make new node a child of the visualization manager's node
@@ -25,11 +25,13 @@ func _process(delta):
 	for i in 33: # update indicator sizes
 		var sphere = landmarks[i]
 		sphere.scale = Vector3(1,1,1) * sphereSize
-		if doneLoading: sphere.transform.origin += (landmarkTargets[i] - landmarks[i].transform.origin) * snapFactor
+		var moveVec := (landmarkTargets[i] - landmarks[i].transform.origin) * snapFactor
+		if (doneLoading && moveVec.length() > 0.01): sphere.transform.origin += moveVec
 	
 	if(!doneLoading):
 		rotation_degrees += Vector3(0, 0, -90 * delta)
 	else:
+		$"../Control/CanvasLayer/RecordingButton".init = true
 		rotation_degrees = Vector3.ZERO
 
 
@@ -38,4 +40,4 @@ func _on_websocket_interactor_body_received(receivedLandmarks: Array[Dictionary]
 	doneLoading = true
 	for i in 33:
 		var mark = receivedLandmarks[i]
-		landmarkTargets[i] = Vector3(mark["x"], mark["y"], mark["z"])
+		landmarkTargets[i] = Vector3(float(mark["x"]), float(mark["y"]), float(mark["z"]))

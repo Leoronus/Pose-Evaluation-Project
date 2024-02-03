@@ -13,6 +13,7 @@ var play: bool = true ## Interacts with the play/pause button on the GUI. [color
 signal BodyReceived(receivedLandmarks: Array[Dictionary])
 signal RulaReceived(leftScore: int, rightScore: int)
 signal OwasReceived(postureCode: Dictionary)
+signal AnalysisReceived(results: Dictionary)
 
 
 
@@ -33,12 +34,12 @@ func _process(_delta):
 			s += "."
 		print("Trying to connect")
 		text = "Trying to connect to backend" + s
-		
+	
 	if state == WebSocketPeer.STATE_OPEN:
 		text = ""
 		while _socket.get_available_packet_count():
-			var packet = _socket.get_packet()
-			var message = packetToString(packet)
+			var packet := _socket.get_packet()
+			var message := packetToString(packet)
 			#print("Received message: ", message)
 			var parsedArray: Array = Parser(message)
 			var tag: String = parsedArray[0]
@@ -50,6 +51,8 @@ func _process(_delta):
 					RulaReceived.emit(dictArray[0]["left"], dictArray[0]["right"])
 				elif(tag == "OWAS"):
 					OwasReceived.emit(dictArray[0])
+				elif(tag == "Langzeit"):
+					AnalysisReceived.emit(dictArray[0])
 
 
 
@@ -71,7 +74,7 @@ func Parser(message: String) -> Array:
 			for j in tempArr.size() if (msgArray[0] != "Body") else 4:
 				var item: String = tempArr[j]
 				var tuple: PackedStringArray = item.split(": ")
-				tempDict[tuple[0]] = float(tuple[1])
+				tempDict[tuple[0]] = tuple[1]
 			dictArray.append(tempDict)
 	var returnArray: Array = [msgArray[0], dictArray]
 	return returnArray
@@ -82,5 +85,5 @@ func _on_play_pause_button_up():
 	play = !play
 
 
-func _on_button_button_up():
-	_socket.send_text("whoop")
+func _on_recording_button_button_up():
+	_socket.send_text("recording")
