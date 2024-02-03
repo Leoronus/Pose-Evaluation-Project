@@ -22,7 +22,7 @@ def LongTimeEval(data) -> str:
         n += 1
 
     if(len(posture_codes) < 1):
-        return "Keines der Aufgezeichneten Positionen konnte Ausgewertet werden."
+        return "Error|Error_msg: Keines der Aufgezeichneten Positionen konnte Ausgewertet werden."
         #Breche ab, da von den übergebenen Frames keines Ausgewertet werden konnte
 
     ergebnis = owas.owas_risk_frequenzy(posture_codes)
@@ -40,5 +40,4 @@ def LongTimeEval(data) -> str:
     msg = "Langzeit|back_Position: " + positions[0][ergebnis[0][0]-1] + "\nback_Action: " + action[ergebnis[0][1]-1] + \
           "\narms_Position: " + positions[1][ergebnis[1][0]-1] + "\narms_Action: " + action[ergebnis[1][1]-1] +\
           "\nlegs_Position: " + positions[2][ergebnis[2][0]-1] + "\nlegs_Action : " + action[ergebnis[2][1]-1]
-
     return msg
