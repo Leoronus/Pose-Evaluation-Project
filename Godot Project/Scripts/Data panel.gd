@@ -13,6 +13,7 @@ func _process(_delta):
 
 func _on_websocket_interactor_analysis_received(results):
 	$PanelContainer3.show()
+	$"../../RecordingButton".disabled = false
 	#$PanelContainer2.hide()
 	#$PanelContainer.hide()
 	$"PanelContainer3/VBoxContainer/Analysis text".text = \

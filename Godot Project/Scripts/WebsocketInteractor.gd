@@ -87,3 +87,4 @@ func _on_play_pause_button_up():
 
 func _on_recording_button_button_up():
 	_socket.send_text("recording")
+	$"../Panel/Data panel/PanelContainer3".hide()

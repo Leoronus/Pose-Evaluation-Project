@@ -96,7 +96,7 @@ class BodyThread(threading.Thread):
         '''Gibt ein Mainbody-Objekt mit Smoothing zurück (Koordinaten gemittelt über X Schritte). Smoothing-Stärke kann in tracking_vars.py angepasst werden.'''
         if (self.mainBody != None):
             return self.mainBody.getSmoothed()
-        
+
     def StartRecording(self, captureRate: int, smoothed: bool):
         '''Startet eine Aufnahme der Mediapipe-Daten.'''
         self.__recorder.recording = True
@@ -109,6 +109,7 @@ class BodyThread(threading.Thread):
         '''Beendet die Aufnahme und gibt Aufnahmeergebnis zurück als 2D-Array im Format [[timeStamp: float, body: MainBody], [...]]'''
         self.__recorder.recording = False
         record = self.__recorder.record
+        self.__recorder = RecorderThread()
         return record
         
     def getBodyMessage(self, body: MainBody):

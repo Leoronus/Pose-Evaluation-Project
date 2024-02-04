@@ -34,7 +34,6 @@ PanelContainer/styles/panel = SubResource("StyleBoxFlat_g3f6r")
 [node name="visualizationManager" type="Node3D" parent="."]
 script = ExtResource("1_vje5x")
 sphereSize = 0.075
-snapFactor = 0.1
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -44,39 +43,6 @@ offset_bottom = 40.0
 theme = ExtResource("4_a3r1g")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Control"]
-
-[node name="WebsocketInteractor" type="RichTextLabel" parent="Control/CanvasLayer"]
-z_index = 1
-anchors_preset = -1
-anchor_left = 0.392
-anchor_top = 0.435
-anchor_right = 0.392
-anchor_bottom = 0.435
-offset_left = -159.584
-offset_top = 43.12
-offset_right = 266.416
-offset_bottom = 243.12
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 20
-text = "test"
-script = ExtResource("2_flf4g")
-
-[node name="PythonScriptHandler" type="RichTextLabel" parent="Control/CanvasLayer"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -276.0
-offset_top = -127.0
-offset_right = 268.0
-offset_bottom = 137.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(1, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 40
-script = ExtResource("3_mxv28")
-startBackend = true
 
 [node name="background" type="ColorRect" parent="Control/CanvasLayer"]
 anchors_preset = 15
@@ -171,12 +137,14 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="BoxContainer" type="BoxContainer" parent="Control/CanvasLayer"]
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = -1
+anchor_right = 0.773
 anchor_bottom = 1.0
-offset_right = -261.0
+offset_right = 0.503906
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="Control/CanvasLayer/BoxContainer"]
@@ -190,13 +158,12 @@ theme = SubResource("Theme_h8gba")
 [node name="SubViewportContainer" type="SubViewportContainer" parent="Control/CanvasLayer/BoxContainer/PanelContainer"]
 clip_contents = true
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 theme = ExtResource("4_a3r1g")
 
 [node name="SubViewport" type="SubViewport" parent="Control/CanvasLayer/BoxContainer/PanelContainer/SubViewportContainer"]
 handle_input_locally = false
-size = Vector2i(862, 587)
+size = Vector2i(872, 597)
+size_2d_override_stretch = true
 render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="Control/CanvasLayer/BoxContainer/PanelContainer/SubViewportContainer/SubViewport"]
@@ -238,13 +205,44 @@ expand_icon = true
 script = ExtResource("10_p12jx")
 icons = Array[Texture2D]([ExtResource("10_fvdjy"), ExtResource("12_66i8o")])
 
+[node name="WebsocketInteractor" type="RichTextLabel" parent="Control/CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.392
+anchor_top = 0.435
+anchor_right = 0.392
+anchor_bottom = 0.435
+offset_left = -159.584
+offset_top = 43.12
+offset_right = 266.416
+offset_bottom = 243.12
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 20
+text = "test"
+script = ExtResource("2_flf4g")
+
+[node name="PythonScriptHandler" type="RichTextLabel" parent="Control/CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -276.0
+offset_top = -127.0
+offset_right = 268.0
+offset_bottom = 137.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 40
+script = ExtResource("3_mxv28")
+
+[connection signal="button_up" from="Control/CanvasLayer/PlayPause" to="Control/CanvasLayer/PlayPause" method="_on_button_up"]
+[connection signal="button_up" from="Control/CanvasLayer/PlayPause" to="Control/CanvasLayer/WebsocketInteractor" method="_on_play_pause_button_up"]
+[connection signal="button_up" from="Control/CanvasLayer/RecordingButton" to="Control/CanvasLayer/RecordingButton" method="_on_button_up"]
+[connection signal="button_up" from="Control/CanvasLayer/RecordingButton" to="Control/CanvasLayer/WebsocketInteractor" method="_on_recording_button_button_up"]
 [connection signal="AnalysisReceived" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/Panel/Data panel" method="_on_websocket_interactor_analysis_received"]
 [connection signal="BodyReceived" from="Control/CanvasLayer/WebsocketInteractor" to="visualizationManager" method="_on_websocket_interactor_body_received"]
 [connection signal="BodyReceived" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/PlayPause" method="_on_websocket_interactor_body_received"]
 [connection signal="OwasReceived" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/Panel/Data panel/PanelContainer2/VBoxContainer/OWAS text" method="_on_websocket_interactor_owas_received"]
 [connection signal="RulaReceived" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/Panel/Data panel/PanelContainer/VBoxContainer/RULA text" method="_on_websocket_interactor_rula_received"]
 [connection signal="tree_exiting" from="Control/CanvasLayer/PythonScriptHandler" to="Control/CanvasLayer/PythonScriptHandler" method="_on_tree_exiting"]
-[connection signal="button_up" from="Control/CanvasLayer/PlayPause" to="Control/CanvasLayer/WebsocketInteractor" method="_on_play_pause_button_up"]
-[connection signal="button_up" from="Control/CanvasLayer/PlayPause" to="Control/CanvasLayer/PlayPause" method="_on_button_up"]
-[connection signal="button_up" from="Control/CanvasLayer/RecordingButton" to="Control/CanvasLayer/WebsocketInteractor" method="_on_recording_button_button_up"]
-[connection signal="button_up" from="Control/CanvasLayer/RecordingButton" to="Control/CanvasLayer/RecordingButton" method="_on_button_up"]
