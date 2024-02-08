@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3llv6w60cfen"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2bvdn"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_fgh62"]
+material = SubResource("StandardMaterial3D_2bvdn")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_fgh62")

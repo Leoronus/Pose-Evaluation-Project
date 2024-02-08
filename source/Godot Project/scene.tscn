@@ -1,0 +1,248 @@
+[gd_scene load_steps=16 format=3 uid="uid://c68h4lb5tcjpj"]
+
+[ext_resource type="Script" path="res://Scripts/visualizationManager.gd" id="1_vje5x"]
+[ext_resource type="Script" path="res://Scripts/WebsocketInteractor.gd" id="2_flf4g"]
+[ext_resource type="Script" path="res://Scripts/PythonScriptHandler.gd" id="3_mxv28"]
+[ext_resource type="Theme" uid="uid://c182j7qiysl7o" path="res://mainTheme.tres" id="4_a3r1g"]
+[ext_resource type="Script" path="res://Scripts/RULA label.gd" id="4_ioyu8"]
+[ext_resource type="Script" path="res://Scripts/OWAS label.gd" id="5_hplph"]
+[ext_resource type="Script" path="res://Scripts/Data panel.gd" id="5_iu052"]
+[ext_resource type="Texture2D" uid="uid://cseelwgtytwsm" path="res://icons/pause_FILL0_wght400_GRAD0_opsz24.svg" id="7_fwcpt"]
+[ext_resource type="Script" path="res://Scripts/PlayPause.gd" id="8_dmoa8"]
+[ext_resource type="Texture2D" uid="uid://bsahprpsxdsul" path="res://icons/play_arrow_FILL0_wght400_GRAD0_opsz24.svg" id="9_mq5h3"]
+[ext_resource type="Texture2D" uid="uid://b7ui2jsnepthn" path="res://icons/record_FILL0_wght400_GRAD0_opsz24.svg" id="10_fvdjy"]
+[ext_resource type="Script" path="res://Scripts/RecordingButton.gd" id="10_p12jx"]
+[ext_resource type="Texture2D" uid="uid://duki2jgu2qlg" path="res://icons/stop_FILL0_wght400_GRAD0_opsz24.svg" id="12_66i8o"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g3f6r"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="Theme" id="Theme_h8gba"]
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_g3f6r")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="visualizationManager" type="Node3D" parent="."]
+script = ExtResource("1_vje5x")
+sphereSize = 0.075
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = ExtResource("4_a3r1g")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Control"]
+
+[node name="background" type="ColorRect" parent="Control/CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.631373, 1, 0.937255, 1)
+
+[node name="Panel" type="Panel" parent="Control/CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.773
+anchor_right = 0.993
+anchor_bottom = 0.985
+offset_left = 0.503906
+offset_top = 9.0
+offset_right = 0.0639648
+offset_bottom = -0.280029
+theme = ExtResource("4_a3r1g")
+
+[node name="Data panel" type="VBoxContainer" parent="Control/CanvasLayer/Panel"]
+clip_contents = true
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("4_a3r1g")
+script = ExtResource("5_iu052")
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/CanvasLayer/Panel/Data panel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("4_a3r1g")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/CanvasLayer/Panel/Data panel/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/CanvasLayer/Panel/Data panel/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_a3r1g")
+text = "RULA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RULA text" type="RichTextLabel" parent="Control/CanvasLayer/Panel/Data panel/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_ioyu8")
+
+[node name="PanelContainer2" type="PanelContainer" parent="Control/CanvasLayer/Panel/Data panel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("4_a3r1g")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/CanvasLayer/Panel/Data panel/PanelContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/CanvasLayer/Panel/Data panel/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_a3r1g")
+text = "OWAS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OWAS text" type="RichTextLabel" parent="Control/CanvasLayer/Panel/Data panel/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("5_hplph")
+
+[node name="PanelContainer3" type="PanelContainer" parent="Control/CanvasLayer/Panel/Data panel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/CanvasLayer/Panel/Data panel/PanelContainer3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/CanvasLayer/Panel/Data panel/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+text = "Analyse"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Analysis text" type="RichTextLabel" parent="Control/CanvasLayer/Panel/Data panel/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BoxContainer" type="BoxContainer" parent="Control/CanvasLayer"]
+anchors_preset = -1
+anchor_right = 0.773
+anchor_bottom = 1.0
+offset_right = 0.503906
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/CanvasLayer/BoxContainer"]
+clip_children = 2
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = SubResource("Theme_h8gba")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Control/CanvasLayer/BoxContainer/PanelContainer"]
+clip_contents = true
+layout_mode = 2
+theme = ExtResource("4_a3r1g")
+
+[node name="SubViewport" type="SubViewport" parent="Control/CanvasLayer/BoxContainer/PanelContainer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(872, 597)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Control/CanvasLayer/BoxContainer/PanelContainer/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 0.999191, 0.040219, 0, -0.040219, 0.999191, 0, 0.220885, 3.38903)
+current = true
+fov = 40.0
+
+[node name="PlayPause" type="Button" parent="Control/CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.762
+anchor_top = 0.955
+anchor_right = 0.762
+anchor_bottom = 0.955
+offset_left = -54.824
+offset_top = -55.84
+offset_right = -3.82404
+offset_bottom = -3.84003
+theme = ExtResource("4_a3r1g")
+icon = ExtResource("7_fwcpt")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("8_dmoa8")
+icons = Array[Texture2D]([ExtResource("7_fwcpt"), ExtResource("9_mq5h3")])
+
+[node name="RecordingButton" type="Button" parent="Control/CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.762
+anchor_top = 0.955
+anchor_right = 0.762
+anchor_bottom = 0.955
+offset_left = -54.824
+offset_top = -110.84
+offset_right = -3.8241
+offset_bottom = -58.84
+theme = ExtResource("4_a3r1g")
+icon = ExtResource("10_fvdjy")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("10_p12jx")
+icons = Array[Texture2D]([ExtResource("10_fvdjy"), ExtResource("12_66i8o")])
+
+[node name="WebsocketInteractor" type="RichTextLabel" parent="Control/CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.392
+anchor_top = 0.435
+anchor_right = 0.392
+anchor_bottom = 0.435
+offset_left = -159.584
+offset_top = 43.12
+offset_right = 266.416
+offset_bottom = 243.12
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 20
+text = "test"
+script = ExtResource("2_flf4g")
+
+[node name="PythonScriptHandler" type="RichTextLabel" parent="Control/CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -276.0
+offset_top = -127.0
+offset_right = 268.0
+offset_bottom = 137.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 40
+script = ExtResource("3_mxv28")
+
+[connection signal="button_up" from="Control/CanvasLayer/PlayPause" to="Control/CanvasLayer/PlayPause" method="_on_button_up"]
+[connection signal="button_up" from="Control/CanvasLayer/PlayPause" to="Control/CanvasLayer/WebsocketInteractor" method="_on_play_pause_button_up"]
+[connection signal="button_up" from="Control/CanvasLayer/RecordingButton" to="Control/CanvasLayer/RecordingButton" method="_on_button_up"]
+[connection signal="button_up" from="Control/CanvasLayer/RecordingButton" to="Control/CanvasLayer/WebsocketInteractor" method="_on_recording_button_button_up"]
+[connection signal="AnalysisReceived" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/Panel/Data panel" method="_on_websocket_interactor_analysis_received"]
+[connection signal="BodyReceived" from="Control/CanvasLayer/WebsocketInteractor" to="visualizationManager" method="_on_websocket_interactor_body_received"]
+[connection signal="BodyReceived" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/PlayPause" method="_on_websocket_interactor_body_received"]
+[connection signal="OwasReceived" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/Panel/Data panel/PanelContainer2/VBoxContainer/OWAS text" method="_on_websocket_interactor_owas_received"]
+[connection signal="RulaReceived" from="Control/CanvasLayer/WebsocketInteractor" to="Control/CanvasLayer/Panel/Data panel/PanelContainer/VBoxContainer/RULA text" method="_on_websocket_interactor_rula_received"]
+[connection signal="tree_exiting" from="Control/CanvasLayer/PythonScriptHandler" to="Control/CanvasLayer/PythonScriptHandler" method="_on_tree_exiting"]
